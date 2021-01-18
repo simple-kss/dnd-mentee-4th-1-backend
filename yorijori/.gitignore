@@ -35,3 +35,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### aws key
+*.pem
+
+### properties
+*.properties
