@@ -18,7 +18,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PostsService {
 	private final PostsRepository postsRepository;
-	
+	private final PostRepository postsRepository_;
+
 	public PostsResDto findById(Long id) {
 		Posts entity = postsRepository.findById(id).orElseThrow(
 				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+id));
@@ -44,5 +45,11 @@ public class PostsService {
 		post.setComment(comments);
 		post.setCookingTime(cookingTime);
 		post.setCookingTool(cookingTool);
+	}
+
+	@Transactional
+	public void add(String title, String subTitle, int likeCount, List<String> imageUrls, List<String> comments, String cookingTime, CookingTool cookingTool){
+		Posts post = Posts.createPost(title, subTitle, likeCount, imageUrls, comments, cookingTime, cookingTool);
+		postsRepository_.save(post);
 	}
 }
