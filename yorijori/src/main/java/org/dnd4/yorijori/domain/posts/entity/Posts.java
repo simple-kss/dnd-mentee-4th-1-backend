@@ -43,5 +43,18 @@ public class Posts extends BaseTimeEntity {
 	
 	private String cookingTime;
 	private CookingTool cookingTool;
+
+	public static Posts createPost(String title, String subTitle, int likeCount, List<String> imageUrls, List<String> comments, String cookingTime, CookingTool cookingTool){
+		Posts post = new Posts();
+		post.setTitle(title);
+		post.setSubTitle(subTitle);
+		post.setLikeCount(likeCount);
+		post.setImageUrl(imageUrls);
+		post.setComment(comments);
+		post.setCookingTime(cookingTime);
+		post.setCookingTool(cookingTool);
+
+		return post;
+	}
 	
 }
