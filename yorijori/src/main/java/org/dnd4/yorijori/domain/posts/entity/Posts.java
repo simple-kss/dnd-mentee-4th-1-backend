@@ -13,8 +13,10 @@ import javax.persistence.JoinColumn;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @Entity
 public class Posts extends BaseTimeEntity {
