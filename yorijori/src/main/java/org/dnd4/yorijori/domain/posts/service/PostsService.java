@@ -23,10 +23,22 @@ public class PostsService {
 		return new PostsResDto(entity);
 	}
 	
+	public List<PostsListResDto> findByTitle(String title) {
+		return postsRepository.findByTitle(title)	
+				.stream().map(posts -> new PostsListResDto(posts))
+				.collect(Collectors.toList());
+	}
+	
 	@Transactional(readOnly = true)
 	public List<PostsListResDto> findAll(){
 		return postsRepository.findAll()	
 				.stream().map(posts -> new PostsListResDto(posts))
 				.collect(Collectors.toList());
+	}
+	@Transactional
+	public void delete(Long id) {
+		Posts posts = postsRepository.findById(id).orElseThrow(
+				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+id));
+		postsRepository.delete(posts);
 	}
 }

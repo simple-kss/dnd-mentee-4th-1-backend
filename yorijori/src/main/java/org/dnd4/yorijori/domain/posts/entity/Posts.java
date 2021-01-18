@@ -34,7 +34,6 @@ public class Posts extends BaseTimeEntity {
 	@ElementCollection
     @CollectionTable(name = "imageUrls", joinColumns = @JoinColumn(name = "pid"))
     private List<String> imageUrl;
-	
 	@ElementCollection
     @CollectionTable(name = "comments", joinColumns = @JoinColumn(name = "pid"))
     private List<String> comment;
