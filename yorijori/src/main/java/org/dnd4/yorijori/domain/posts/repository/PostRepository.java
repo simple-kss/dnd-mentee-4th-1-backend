@@ -11,8 +11,9 @@ import javax.persistence.EntityManager;
 public class PostRepository {
     private final EntityManager em;
 
-    public void save(Posts posts){
-        em.persist(posts);
+    public void save(Posts post){
+        if(post.getId() == null) em.persist(post);
+        else em.merge(post);
     }
 
 }
