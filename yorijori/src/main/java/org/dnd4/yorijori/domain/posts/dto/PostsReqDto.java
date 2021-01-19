@@ -9,7 +9,6 @@ import java.util.List;
 
 @Getter @Setter
 public class PostsReqDto {
-    private Long id;
     private String title;
     private String subTitle;
     private int likeCount;
