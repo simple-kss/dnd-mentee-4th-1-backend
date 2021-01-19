@@ -6,9 +6,7 @@ import java.util.stream.Collectors;
 import org.dnd4.yorijori.domain.posts.dto.PostsListResDto;
 import org.dnd4.yorijori.domain.posts.dto.PostsReqDto;
 import org.dnd4.yorijori.domain.posts.dto.PostsResDto;
-import org.dnd4.yorijori.domain.posts.entity.CookingTool;
 import org.dnd4.yorijori.domain.posts.entity.Posts;
-import org.dnd4.yorijori.domain.posts.repository.PostRepository;
 import org.dnd4.yorijori.domain.posts.repository.PostsRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PostsService {
 	private final PostsRepository postsRepository;
-	private final PostRepository postsRepository_;
 
 	public PostsResDto findById(Long id) {
 		Posts entity = postsRepository.findById(id).orElseThrow(
@@ -35,17 +32,18 @@ public class PostsService {
 	}
 
 	@Transactional
-	public void update(Long id,String title, String subTitle, int likeCount, List<String> imageUrls, List<String> comments, String cookingTime, CookingTool cookingTool){
+	public void update(PostsReqDto dto){
 
-		Posts post = postsRepository.findById(id).orElseThrow(
-				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+id));
-		post.setTitle(title);
-		post.setSubTitle(subTitle);
-		post.setLikeCount(likeCount);
-		post.setImageUrl(imageUrls);
-		post.setComment(comments);
-		post.setCookingTime(cookingTime);
-		post.setCookingTool(cookingTool);
+		Posts post = postsRepository.findById(dto.getId()).orElseThrow(
+				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+dto.getId()));
+
+		post.setTitle(dto.getTitle());
+		post.setSubTitle(dto.getSubTitle());
+		post.setLikeCount(dto.getLikeCount());
+		post.setImageUrl(dto.getImageUrl());
+		post.setComment(dto.getComment());
+		post.setCookingTime(dto.getCookingTime());
+		post.setCookingTool(dto.getCookingTool());
 	}
 
 	@Transactional
