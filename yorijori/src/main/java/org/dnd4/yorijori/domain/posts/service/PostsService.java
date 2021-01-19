@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.dnd4.yorijori.domain.posts.dto.PostsListResDto;
+import org.dnd4.yorijori.domain.posts.dto.PostsReqDto;
 import org.dnd4.yorijori.domain.posts.dto.PostsResDto;
 import org.dnd4.yorijori.domain.posts.entity.CookingTool;
 import org.dnd4.yorijori.domain.posts.entity.Posts;
@@ -48,8 +49,9 @@ public class PostsService {
 	}
 
 	@Transactional
-	public void add(String title, String subTitle, int likeCount, List<String> imageUrls, List<String> comments, String cookingTime, CookingTool cookingTool){
-		Posts post = Posts.createPost(title, subTitle, likeCount, imageUrls, comments, cookingTime, cookingTool);
-		postsRepository_.save(post);
+	public void add(PostsReqDto dto){
+
+		Posts post = Posts.createPost(dto.getTitle(), dto.getSubTitle(), dto.getLikeCount(), dto.getImageUrl(), dto.getComment(),dto.getCookingTime(), dto.getCookingTool());
+		postsRepository.save(post);
 	}
 }
