@@ -32,10 +32,10 @@ public class PostsService {
 	}
 
 	@Transactional
-	public void update(PostsReqDto dto){
+	public Long update(Long id, PostsReqDto dto){
 
-		Posts post = postsRepository.findById(dto.getId()).orElseThrow(
-				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+dto.getId()));
+		Posts post = postsRepository.findById(id).orElseThrow(
+				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+id));
 
 		post.setTitle(dto.getTitle());
 		post.setSubTitle(dto.getSubTitle());
@@ -44,12 +44,14 @@ public class PostsService {
 		post.setComment(dto.getComment());
 		post.setCookingTime(dto.getCookingTime());
 		post.setCookingTool(dto.getCookingTool());
+
+		return id;
 	}
 
 	@Transactional
-	public void add(PostsReqDto dto){
+	public Long add(PostsReqDto dto){
 
 		Posts post = Posts.createPost(dto.getTitle(), dto.getSubTitle(), dto.getLikeCount(), dto.getImageUrl(), dto.getComment(),dto.getCookingTime(), dto.getCookingTool());
-		postsRepository.save(post);
+		return postsRepository.save(post).getId();
 	}
 }
