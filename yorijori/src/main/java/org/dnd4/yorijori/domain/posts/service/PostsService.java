@@ -24,6 +24,12 @@ public class PostsService {
 		return new PostsResDto(entity);
 	}
 	
+	public List<PostsListResDto> findByTitle(String title) {
+		return postsRepository.findByTitle(title)	
+				.stream().map(posts -> new PostsListResDto(posts))
+				.collect(Collectors.toList());
+	}
+	
 	@Transactional(readOnly = true)
 	public List<PostsListResDto> findAll(){
 		return postsRepository.findAll()	
@@ -53,5 +59,12 @@ public class PostsService {
 
 		Posts post = Posts.createPost(dto.getTitle(), dto.getSubTitle(), dto.getLikeCount(), dto.getImageUrl(), dto.getComment(),dto.getCookingTime(), dto.getCookingTool());
 		return postsRepository.save(post).getId();
+
+	@Transactional
+	public void delete(Long id) {
+		Posts posts = postsRepository.findById(id).orElseThrow(
+				() -> new IllegalArgumentException("해당 게시물이 없습니다. id = "+id));
+		postsRepository.delete(posts);
+
 	}
 }
