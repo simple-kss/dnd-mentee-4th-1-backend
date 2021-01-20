@@ -55,10 +55,11 @@ public class PostsService {
 	}
 
 	@Transactional
-	public Long add(PostsReqDto dto){
+	public Long add(PostsReqDto dto) {
 
-		Posts post = Posts.createPost(dto.getTitle(), dto.getSubTitle(), dto.getLikeCount(), dto.getImageUrl(), dto.getComment(),dto.getCookingTime(), dto.getCookingTool());
+		Posts post = Posts.createPost(dto.getTitle(), dto.getSubTitle(), dto.getLikeCount(), dto.getImageUrl(), dto.getComment(), dto.getCookingTime(), dto.getCookingTool());
 		return postsRepository.save(post).getId();
+	}
 
 	@Transactional
 	public void delete(Long id) {

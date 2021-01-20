@@ -52,12 +52,13 @@ public class PostsController {
 	}
 
 	@Data
-	class idResponse{
+	class idResponse {
 		private Long id;
 
-		public idResponse(Long id){
+		public idResponse(Long id) {
 			this.id = id;
 		}
+	}
 	
 	@DeleteMapping("posts/{id}")
 	public Long delete(@PathVariable Long id) {
