@@ -20,27 +20,28 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/posts")
 public class PostsController {
 	
 	private final PostsService postsService;
 	
-	@GetMapping("posts/{id}")
+	@GetMapping("/{id}")
 	public PostsResDto findById(@PathVariable Long id) {
 		return postsService.findById(id);
 	}
 	
-	@GetMapping("posts/title={title}")
+	@GetMapping("/title={title}")
 	public List<PostsListResDto> findByTitle(@PathVariable String title) {
 		return postsService.findByTitle(title);
 	}
 	
-	@GetMapping("posts")
+	@GetMapping("")
 	public List<PostsListResDto> findAll() {
 		return postsService.findAll();
 	}
 
 
-	@PostMapping("/")
+	@PostMapping("")
 	public idResponse addPost(@RequestBody @Validated PostsReqDto reqDto){
 		Long id = postsService.add(reqDto);
 		return new idResponse(id);

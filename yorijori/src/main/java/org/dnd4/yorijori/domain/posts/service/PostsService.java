@@ -51,7 +51,8 @@ public class PostsService {
 		post.setCookingTime(dto.getCookingTime());
 		post.setCookingTool(dto.getCookingTool());
 
-		return id;
+
+		return post.getId();
 	}
 
 	@Transactional
