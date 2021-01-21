@@ -35,13 +35,13 @@ public class PostsController {
 		return postsService.findByTitle(title);
 	}
 	
-	@GetMapping("/")
+	@GetMapping("")
 	public List<PostsListResDto> findAll() {
 		return postsService.findAll();
 	}
 
 
-	@PostMapping("/")
+	@PostMapping("")
 	public idResponse addPost(@RequestBody @Validated PostsReqDto reqDto){
 		Long id = postsService.add(reqDto);
 		return new idResponse(id);
