@@ -2,14 +2,7 @@ package org.dnd4.yorijori.domain.posts.entity;
 
 import java.util.List;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,6 +34,7 @@ public class Posts extends BaseTimeEntity {
     private List<String> comment;
 	
 	private String cookingTime;
+	@Enumerated(EnumType.STRING)
 	private CookingTool cookingTool;
 
 	public static Posts createPost(String title, String subTitle, int likeCount, List<String> imageUrls, List<String> comments, String cookingTime, CookingTool cookingTool){
