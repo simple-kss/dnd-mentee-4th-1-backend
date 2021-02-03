@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.dnd4.yorijori.domain.posts.entity.BaseTimeEntity;
 import org.dnd4.yorijori.domain.user.entity.User;
 
 import lombok.Getter;
@@ -17,7 +18,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Rating {
+public class Rating extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
