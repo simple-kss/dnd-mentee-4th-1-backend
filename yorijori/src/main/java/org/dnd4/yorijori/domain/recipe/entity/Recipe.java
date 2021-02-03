@@ -26,19 +26,19 @@ public class Recipe extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotNull
 	private String title;
-	
+
 	private int step;
 	private int time;
-	
+
 	@ColumnDefault("0")
 	private int viewCount;
 	private String thumnail;
-	
+
 	@ManyToOne
-    @JoinColumn(name= "user_id", nullable=false)
-    private User user_id;
-	
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
 }

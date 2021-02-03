@@ -18,18 +18,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class User {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
 	private String email;
-	
+
 	@OneToMany(mappedBy = "follower")
-    private List<UserFollow> follower = new ArrayList<>();
+	private List<UserFollow> follower = new ArrayList<>();
 
 	@OneToMany(mappedBy = "following")
-    private List<UserFollow> following = new ArrayList<>();
+	private List<UserFollow> following = new ArrayList<>();
 
 }

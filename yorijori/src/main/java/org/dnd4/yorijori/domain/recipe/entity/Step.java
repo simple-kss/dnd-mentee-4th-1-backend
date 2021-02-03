@@ -16,15 +16,15 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class Step {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne
-    @JoinColumn(name= "recipe_id", nullable=false)
-    private Recipe recipe_id;
-	
+	@JoinColumn(name = "recipe_id", nullable = false)
+	private Recipe recipe;
+
 	private String description;
 	private String imageUrl;
 	private int sequence;

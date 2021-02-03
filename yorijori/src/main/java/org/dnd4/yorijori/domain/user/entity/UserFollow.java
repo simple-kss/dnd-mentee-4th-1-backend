@@ -19,30 +19,30 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 public class UserFollow {
-	
+
 	@EmbeddedId
 	FollowKey id;
 
 	@ManyToOne
 	@MapsId("following_id")
-    @JoinColumn(name = "following_id")
-    private User following;
-	
-    @ManyToOne
-    @MapsId("follower_id")
-    @JoinColumn(name = "follower_id")
-    private User follower;
-    
-    private YesOrNo followingAlarm;
-    private YesOrNo followerAlarm;
+	@JoinColumn(name = "following_id")
+	private User following;
+
+	@ManyToOne
+	@MapsId("follower_id")
+	@JoinColumn(name = "follower_id")
+	private User follower;
+
+	private YesOrNo followingAlarm;
+	private YesOrNo followerAlarm;
 }
 
 @SuppressWarnings("serial")
 @Embeddable
 class FollowKey implements Serializable {
 	@Column(name = "following_id")
-    Long followingId;
- 
-    @Column(name = "follower_id")
-    Long followerId;
- }
+	Long followingId;
+
+	@Column(name = "follower_id")
+	Long followerId;
+}

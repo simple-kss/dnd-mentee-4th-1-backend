@@ -21,15 +21,15 @@ public class Comment {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@ManyToOne
-    @JoinColumn(name= "user_id", nullable=false)
-    private User user_id;
-	
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
+
 	@ManyToOne
-    @JoinColumn(name= "recipe_id", nullable=false)
-    private Recipe recipe_id;
-	
+	@JoinColumn(name = "recipe_id", nullable = false)
+	private Recipe recipe;
+
 	private String content;
 	private String imageUrl;
 }
