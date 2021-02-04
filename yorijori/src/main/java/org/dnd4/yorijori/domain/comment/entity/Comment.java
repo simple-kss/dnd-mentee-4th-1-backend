@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import org.dnd4.yorijori.domain.common.BaseTimeEntity;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.user.entity.User;
 
@@ -18,7 +19,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Comment {
+public class Comment extends BaseTimeEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
