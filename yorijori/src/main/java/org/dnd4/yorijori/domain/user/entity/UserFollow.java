@@ -16,7 +16,6 @@ import lombok.Setter;
 import org.dnd4.yorijori.domain.common.YesOrNo;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 public class UserFollow {
