@@ -13,6 +13,7 @@ import javax.persistence.MapsId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.dnd4.yorijori.domain.common.YesOrNo;
 
 @Getter
 @Setter
