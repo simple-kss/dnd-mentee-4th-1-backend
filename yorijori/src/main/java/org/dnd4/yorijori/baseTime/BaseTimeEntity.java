@@ -1,4 +1,4 @@
-package org.dnd4.yorijori.domain.recipe.entity;
+package org.dnd4.yorijori.baseTime;
 
 import java.time.LocalDateTime;
 

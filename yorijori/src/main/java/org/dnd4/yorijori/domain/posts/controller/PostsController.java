@@ -2,20 +2,21 @@ package org.dnd4.yorijori.domain.posts.controller;
 
 import java.util.List;
 
-import lombok.Data;
 import org.dnd4.yorijori.domain.posts.dto.PostsListResDto;
 import org.dnd4.yorijori.domain.posts.dto.PostsReqDto;
 import org.dnd4.yorijori.domain.posts.dto.PostsResDto;
 import org.dnd4.yorijori.domain.posts.service.PostsService;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

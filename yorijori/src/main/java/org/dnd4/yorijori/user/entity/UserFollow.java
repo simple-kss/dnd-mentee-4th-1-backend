@@ -1,4 +1,4 @@
-package org.dnd4.yorijori.domain.user.entity;
+package org.dnd4.yorijori.user.entity;
 
 import java.io.Serializable;
 
