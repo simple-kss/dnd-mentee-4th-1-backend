@@ -1,4 +1,4 @@
-package org.dnd4.yorijori.baseTime;
+package org.dnd4.yorijori.domain.common;
 
 import java.time.LocalDateTime;
 

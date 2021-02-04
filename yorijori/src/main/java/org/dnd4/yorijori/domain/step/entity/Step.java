@@ -1,4 +1,4 @@
-package org.dnd4.yorijori.comment.entity;
+package org.dnd4.yorijori.domain.step.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,8 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import org.dnd4.yorijori.recipe.entity.Recipe;
-import org.dnd4.yorijori.user.entity.User;
+import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,19 +17,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Comment {
+public class Step {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
-
-	@ManyToOne
 	@JoinColumn(name = "recipe_id", nullable = false)
 	private Recipe recipe;
 
-	private String content;
+	private String description;
 	private String imageUrl;
+	private int sequence;
 }
