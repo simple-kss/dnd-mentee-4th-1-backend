@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class RecipeService {
-	
+
 	private final RecipeRepository recipeRepository;
 
 }

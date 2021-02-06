@@ -20,11 +20,11 @@ public class RecipeListController {
 	@GetMapping("/recipes")
 	public List<RecipeListDto> recipeList(@RequestParam(required = false) String queryType,
 			@RequestParam(required = false) String keyword,
-			@RequestParam(required = false, defaultValue = "0") int offset,
-			@RequestParam(required = false, defaultValue = "10") int limit) {
+			@RequestParam(required = false, defaultValue = "0") int limit,
+			@RequestParam(required = false, defaultValue = "10") int offset) {
 		List<RecipeListDto> result = new ArrayList<RecipeListDto>();
 		if (queryType == null) {
-			result = recipeListService.findAll();
+			result = recipeListService.findAll(limit, offset);
 		} else if (queryType.equals("search")) {
 			result = recipeListService.searchRecipes(keyword);
 		}

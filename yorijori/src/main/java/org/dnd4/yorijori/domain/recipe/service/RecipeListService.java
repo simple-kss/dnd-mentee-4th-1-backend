@@ -15,9 +15,9 @@ import lombok.RequiredArgsConstructor;
 public class RecipeListService {
 	private final RecipeRepository recipeRepository;
 
-	public List<RecipeListDto> findAll() {
-		List<RecipeListDto> result = recipeRepository.findAll(PageRequest.of(1, 2)).stream().map(RecipeListDto::new)
-				.collect(Collectors.toList());
+	public List<RecipeListDto> findAll(int limit, int offset) {
+		List<RecipeListDto> result = recipeRepository.findAll(PageRequest.of(limit, offset)).stream()
+				.map(RecipeListDto::new).collect(Collectors.toList());
 		return result;
 	}
 
