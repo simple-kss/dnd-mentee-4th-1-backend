@@ -1,4 +1,4 @@
-package org.dnd4.yorijori.domain.user.entity;
+package org.dnd4.yorijori.domain.user_follow.entity;
 
 import java.io.Serializable;
 
@@ -12,8 +12,8 @@ import javax.persistence.MapsId;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.dnd4.yorijori.domain.common.YesOrNo;
+import org.dnd4.yorijori.domain.user.entity.User;
 
 @Getter
 @NoArgsConstructor

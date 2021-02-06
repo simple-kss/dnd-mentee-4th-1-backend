@@ -11,7 +11,7 @@ import javax.persistence.OneToMany;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.dnd4.yorijori.domain.user_follow.entity.UserFollow;
 
 @Getter
 @NoArgsConstructor
