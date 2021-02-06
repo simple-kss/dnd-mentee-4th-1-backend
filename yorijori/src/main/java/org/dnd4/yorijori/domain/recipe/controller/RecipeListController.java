@@ -23,11 +23,9 @@ public class RecipeListController {
 			@RequestParam(required = false, defaultValue = "0") int offset,
 			@RequestParam(required = false, defaultValue = "10") int limit) {
 		List<RecipeListDto> result = new ArrayList<RecipeListDto>();
-		System.out.println(queryType);
 		if (queryType == null) {
 			result = recipeListService.findAll();
 		} else if (queryType.equals("search")) {
-			System.out.println("success");
 			result = recipeListService.searchRecipes(keyword);
 		}
 		return result;
