@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
-	@Query("SELECT r FROM Recipe r WHERE r.title LIKE %:keyword%")
-	List<Recipe> findByTitleContaining(@Param("keyword") String keyword);
+	@Query(value = "SELECT * FROM recipe WHERE title LIKE %:keyword% LIMIT :limit OFFSET :offset", nativeQuery=true)
+	List<Recipe> findByTitleContaining(@Param("keyword") String keyword, @Param("limit") int limit, @Param("offset") int offset);
 }

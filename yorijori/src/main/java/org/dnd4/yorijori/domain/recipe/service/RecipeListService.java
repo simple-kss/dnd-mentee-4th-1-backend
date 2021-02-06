@@ -16,13 +16,13 @@ public class RecipeListService {
 	private final RecipeRepository recipeRepository;
 
 	public List<RecipeListDto> findAll(int limit, int offset) {
-		List<RecipeListDto> result = recipeRepository.findAll(PageRequest.of(limit, offset)).stream()
+		List<RecipeListDto> result = recipeRepository.findAll(PageRequest.of(offset, limit)).stream()
 				.map(RecipeListDto::new).collect(Collectors.toList());
 		return result;
 	}
 
-	public List<RecipeListDto> searchRecipes(String keyword) {
-		List<RecipeListDto> result = recipeRepository.findByTitleContaining(keyword).stream().map(RecipeListDto::new)
+	public List<RecipeListDto> searchRecipes(String keyword, int limit, int offset) {
+		List<RecipeListDto> result = recipeRepository.findByTitleContaining(keyword, limit, offset).stream().map(RecipeListDto::new)
 				.collect(Collectors.toList());
 		return result;
 	}
