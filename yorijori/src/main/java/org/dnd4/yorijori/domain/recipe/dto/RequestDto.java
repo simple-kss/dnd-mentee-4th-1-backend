@@ -1,13 +1,13 @@
 package org.dnd4.yorijori.domain.recipe.dto;
 
 import lombok.Data;
-import org.dnd4.yorijori.domain.user.entity.User;
 
+import javax.persistence.Embeddable;
 import java.util.List;
 
 @Data
 public class RequestDto {
-    private Long recipeId;
+
     private String title;
     private String thumbnail;
 
@@ -19,9 +19,13 @@ public class RequestDto {
     private int time;
     private Long writerId;
 
+    @Embeddable
     @Data
-    class Step{
+    public class Step {
         private String image;
-        private String comment;
+        private String description;
     }
+
+
 }
+
