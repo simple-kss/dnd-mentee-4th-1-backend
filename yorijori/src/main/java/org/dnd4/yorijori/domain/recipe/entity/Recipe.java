@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import org.dnd4.yorijori.domain.comment.entity.Comment;
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
+import org.dnd4.yorijori.domain.common.YesOrNo;
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
 import org.dnd4.yorijori.domain.rating.entity.Rating;
 import org.dnd4.yorijori.domain.recipe_ingredient.entity.RecipeIngredient;
@@ -20,6 +21,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @NoArgsConstructor
@@ -58,4 +60,18 @@ public class Recipe extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "recipe")
 	private List<RecipeTheme> themes = new ArrayList<>();
+
+	public List<Ingredient> getMainIngredients(){
+		return this.ingredients.stream()
+				.filter(i->i.getIsSub().equals(YesOrNo.Y))
+				.map(RecipeIngredient::getIngredient)
+				.collect(Collectors.toList());
+	}
+
+	public List<Ingredient> getSubIngredients(){
+		return this.ingredients.stream()
+				.filter(i->i.getIsSub().equals(YesOrNo.N))
+				.map(RecipeIngredient::getIngredient)
+				.collect(Collectors.toList());
+	}
 }
