@@ -1,13 +1,14 @@
 package org.dnd4.yorijori.domain.recipe.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
+import org.dnd4.yorijori.domain.comment.entity.Comment;
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
+import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
+import org.dnd4.yorijori.domain.rating.entity.Rating;
+import org.dnd4.yorijori.domain.recipe_ingredient.entity.RecipeIngredient;
+import org.dnd4.yorijori.domain.recipe_theme.entity.RecipeTheme;
+import org.dnd4.yorijori.domain.step.entity.Step;
 import org.dnd4.yorijori.domain.user.entity.User;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -16,6 +17,9 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -34,10 +38,24 @@ public class Recipe extends BaseTimeEntity {
 
 	@ColumnDefault("0")
 	private int viewCount;
-	private String thumnail;
+	private String thumbnail;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
+	@OneToMany(mappedBy = "recipe")
+	private List<RecipeIngredient> ingredients = new ArrayList<>();
+
+	@OneToMany(mappedBy = "recipe")
+	private List<Step> steps = new ArrayList<>();
+
+	@OneToMany(mappedBy = "recipe")
+	private List<Rating> ratings = new ArrayList<>();
+
+	@OneToMany(mappedBy = "recipe")
+	private List<Comment> comments = new ArrayList<>();
+
+	@OneToMany(mappedBy = "recipe")
+	private List<RecipeTheme> themes = new ArrayList<>();
 }
