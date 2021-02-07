@@ -6,6 +6,7 @@ import org.dnd4.yorijori.domain.comment.entity.Comment;
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
 import org.dnd4.yorijori.domain.common.YesOrNo;
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
+import org.dnd4.yorijori.domain.label.entity.Label;
 import org.dnd4.yorijori.domain.rating.entity.Rating;
 import org.dnd4.yorijori.domain.recipe_ingredient.entity.RecipeIngredient;
 import org.dnd4.yorijori.domain.recipe_theme.entity.RecipeTheme;
@@ -62,23 +63,38 @@ public class Recipe extends BaseTimeEntity {
 	@OneToMany(mappedBy = "recipe")
 	private List<RecipeTheme> recipeThemes = new ArrayList<>();
 
+	@OneToMany(mappedBy = "label")
+	private List<Label> labels = new ArrayList<>();
+
 	public List<Ingredient> getMainIngredients(){
-		return this.recipeIngredients.stream()
+		return this.getRecipeIngredients().stream()
 				.filter(i->i.getIsSub().equals(YesOrNo.Y))
 				.map(RecipeIngredient::getIngredient)
 				.collect(Collectors.toList());
 	}
 
 	public List<Ingredient> getSubIngredients(){
-		return this.recipeIngredients.stream()
+		return this.getRecipeIngredients().stream()
 				.filter(i->i.getIsSub().equals(YesOrNo.N))
 				.map(RecipeIngredient::getIngredient)
 				.collect(Collectors.toList());
 	}
 
 	public List<Theme> getThemes() {
-		return this.recipeThemes.stream()
+		return this.getRecipeThemes().stream()
 				.map(RecipeTheme::getTheme)
 				.collect(Collectors.toList());
+	}
+
+	public double getAverageStarCount (){
+		return this.getRatings().stream()
+				.map(Rating::getStar)
+				.reduce(0.0, Double::sum)
+				/ this.getRatings().size();
+	}
+
+	// TODO: 2021-02-07 TODO count를 위해서 객체 다 불러오는건 비효율적이라는 생각이 들어, label 서비스에 count를 주는것을 만들어야 할듯
+	public int getWishCount(){
+		return this.getLabels().size();
 	}
 }
