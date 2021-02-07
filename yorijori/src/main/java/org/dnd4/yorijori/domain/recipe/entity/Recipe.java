@@ -2,6 +2,7 @@ package org.dnd4.yorijori.domain.recipe.entity;
 
 import javax.persistence.*;
 
+import lombok.Builder;
 import org.dnd4.yorijori.domain.comment.entity.Comment;
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
 import org.dnd4.yorijori.domain.common.YesOrNo;
@@ -65,6 +66,15 @@ public class Recipe extends BaseTimeEntity {
 
 	@OneToMany(mappedBy = "label")
 	private List<Label> labels = new ArrayList<>();
+
+	@Builder
+	public Recipe(String title, int step, int time,String thumbnail, User user){
+		this.title = title;
+		this.step = step;
+		this.time = time;
+		this.thumbnail = thumbnail;
+		this.user = user;
+	}
 
 	public List<Ingredient> getMainIngredients(){
 		return this.getRecipeIngredients().stream()

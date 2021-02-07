@@ -1,5 +1,6 @@
 package org.dnd4.yorijori.domain.theme.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,4 +18,9 @@ public class Theme {
     private Long id;
 
     private String name;
+
+    @Builder
+    public Theme(String name){
+        this.name = name;
+    }
 }
