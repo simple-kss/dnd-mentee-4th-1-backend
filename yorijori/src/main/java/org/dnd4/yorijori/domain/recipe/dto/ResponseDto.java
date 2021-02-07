@@ -10,7 +10,7 @@ import org.dnd4.yorijori.domain.user.entity.User;
 import java.util.List;
 
 @Data
-public class RecipeDto {
+public class ResponseDto {
     private Long id;
     private String title;
     private String thumbnail;
@@ -26,7 +26,7 @@ public class RecipeDto {
     private int viewCount;
     private User writer;
 
-    public RecipeDto(Recipe recipe){
+    public ResponseDto(Recipe recipe){
         id = recipe.getId();
         title = recipe.getTitle();
         thumbnail = recipe.getThumbnail();
@@ -40,4 +40,6 @@ public class RecipeDto {
         viewCount = recipe.getViewCount();
         writer = recipe.getUser();
     }
+
+
 }
