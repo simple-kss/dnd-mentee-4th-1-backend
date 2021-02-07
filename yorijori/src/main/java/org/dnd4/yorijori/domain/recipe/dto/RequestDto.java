@@ -14,8 +14,14 @@ public class RequestDto {
     private List<Long> mainIngredientIds;
     private List<Long> subIngredientIds;
     private List<Long> themeIds;
-    private List<Long> stepIds;
+    private List<Step> steps;
 
     private int time;
     private Long writerId;
+
+    @Data
+    class Step{
+        private String image;
+        private String comment;
+    }
 }
