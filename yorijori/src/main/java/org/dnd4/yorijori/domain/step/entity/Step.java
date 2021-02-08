@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Builder;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 
 import lombok.Getter;
@@ -29,4 +30,12 @@ public class Step {
 	private String description;
 	private String imageUrl;
 	private int sequence;
+
+	@Builder
+	public Step(Recipe recipe, String description, String imageUrl, int sequence){
+		this.recipe = recipe;
+		this.description = description;
+		this.imageUrl = imageUrl;
+		this.sequence = sequence;
+	}
 }

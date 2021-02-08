@@ -21,7 +21,7 @@ public class RecipeListDto {
 		this.step = recipe.getStep();
 		this.time = recipe.getTime();
 		this.viewCount = recipe.getViewCount();
-		this.thumnail = recipe.getThumnail();
+		this.thumnail = recipe.getThumbnail();
 		this.user = recipe.getUser();
 	}
 }

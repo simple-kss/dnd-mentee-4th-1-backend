@@ -1,5 +1,6 @@
 package org.dnd4.yorijori.domain.label.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
@@ -25,4 +26,9 @@ public class Label extends BaseTimeEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @Builder
+    public Label(Recipe recipe, User user){
+        this.recipe=recipe;
+        this.user=user;
+    }
 }
