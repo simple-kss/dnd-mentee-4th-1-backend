@@ -23,17 +23,16 @@ public class RecipeListController {
 			@RequestParam(required = false) String keyword,
 			@RequestParam(required = false, defaultValue = "10") int limit,
 			@RequestParam(required = false, defaultValue = "0") int offset,
-			@RequestParam(required = false) int timeRange,
-			@RequestParam(required = false) int step) {
+			@RequestParam(required = false) String timeRange, @RequestParam(required = false) String step) {
 		List<ResponseDto> result = new ArrayList<ResponseDto>();
 		if (queryType == null) {
 			result = recipeListService.findAll(limit, offset);
 		} else if (queryType.equals("search")) {
 			result = recipeListService.searchRecipes(keyword, limit, offset);
 		} else if (queryType.equals("time")) {
-			result = recipeListService.timeRecipes(timeRange, limit, offset);
+			result = recipeListService.timeRecipes(Integer.parseInt(timeRange), limit, offset);
 		} else if (queryType.equals("step")) {
-			result = recipeListService.stepRecipes(step, limit, offset);
+			result = recipeListService.stepRecipes(Integer.parseInt(step), limit, offset);
 		}
 		return result;
 	}
