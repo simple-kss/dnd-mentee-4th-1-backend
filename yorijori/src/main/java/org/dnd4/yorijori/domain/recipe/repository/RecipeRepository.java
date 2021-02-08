@@ -10,4 +10,11 @@ import org.springframework.data.repository.query.Param;
 public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	@Query(value = "SELECT * FROM recipe WHERE title LIKE %:keyword% LIMIT :limit OFFSET :offset", nativeQuery=true)
 	List<Recipe> findByTitleContaining(@Param("keyword") String keyword, @Param("limit") int limit, @Param("offset") int offset);
+
+	@Query(value = "SELECT * FROM recipe WHERE time = :timeRange LIMIT :limit OFFSET :offset", nativeQuery=true)
+	List<Recipe> findByTime(@Param("timeRange") int timeRange, @Param("limit") int limit, @Param("offset") int offset);
+	
+	@Query(value = "SELECT * FROM recipe WHERE step = :step LIMIT :limit OFFSET :offset", nativeQuery=true)
+	List<Recipe> findByStep(@Param("step") int step, @Param("limit") int limit, @Param("offset") int offset);
+
 }

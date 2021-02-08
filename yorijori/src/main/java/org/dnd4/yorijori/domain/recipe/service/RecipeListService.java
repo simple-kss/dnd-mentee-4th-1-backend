@@ -22,8 +22,20 @@ public class RecipeListService {
 	}
 
 	public List<RecipeListDto> searchRecipes(String keyword, int limit, int offset) {
-		List<RecipeListDto> result = recipeRepository.findByTitleContaining(keyword, limit, offset).stream().map(RecipeListDto::new)
-				.collect(Collectors.toList());
+		List<RecipeListDto> result = recipeRepository.findByTitleContaining(keyword, limit, offset).stream()
+				.map(RecipeListDto::new).collect(Collectors.toList());
+		return result;
+	}
+	
+	public List<RecipeListDto> timeRecipes(int timeRange, int limit, int offset){
+		List<RecipeListDto> result = recipeRepository.findByTime(timeRange, limit, offset).stream()
+				.map(RecipeListDto::new).collect(Collectors.toList());
+		return result;
+	}
+	
+	public List<RecipeListDto> stepRecipes(int step, int limit, int offset){
+		List<RecipeListDto> result = recipeRepository.findByStep(step, limit, offset).stream()
+				.map(RecipeListDto::new).collect(Collectors.toList());
 		return result;
 	}
 }

@@ -21,12 +21,18 @@ public class RecipeListController {
 	public List<RecipeListDto> recipeList(@RequestParam(required = false) String queryType,
 			@RequestParam(required = false) String keyword,
 			@RequestParam(required = false, defaultValue = "10") int limit,
-			@RequestParam(required = false, defaultValue = "0") int offset) {
+			@RequestParam(required = false, defaultValue = "0") int offset,
+			@RequestParam(required = false) int timeRange,
+			@RequestParam(required = false) int step) {
 		List<RecipeListDto> result = new ArrayList<RecipeListDto>();
 		if (queryType == null) {
 			result = recipeListService.findAll(limit, offset);
 		} else if (queryType.equals("search")) {
 			result = recipeListService.searchRecipes(keyword, limit, offset);
+		} else if (queryType.equals("time")) {
+			result = recipeListService.timeRecipes(timeRange, limit, offset);
+		} else if (queryType.equals("step")) {
+			result = recipeListService.stepRecipes(step, limit, offset);
 		}
 		return result;
 	}
