@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dnd4.yorijori.domain.recipe.dto.RecipeListDto;
+import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,13 +19,13 @@ public class RecipeListController {
 	private final RecipeListService recipeListService;
 
 	@GetMapping("/recipes")
-	public List<RecipeListDto> recipeList(@RequestParam(required = false) String queryType,
+	public List<ResponseDto> recipeList(@RequestParam(required = false) String queryType,
 			@RequestParam(required = false) String keyword,
 			@RequestParam(required = false, defaultValue = "10") int limit,
 			@RequestParam(required = false, defaultValue = "0") int offset,
 			@RequestParam(required = false) int timeRange,
 			@RequestParam(required = false) int step) {
-		List<RecipeListDto> result = new ArrayList<RecipeListDto>();
+		List<ResponseDto> result = new ArrayList<ResponseDto>();
 		if (queryType == null) {
 			result = recipeListService.findAll(limit, offset);
 		} else if (queryType.equals("search")) {
