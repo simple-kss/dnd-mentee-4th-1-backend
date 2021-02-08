@@ -1,5 +1,6 @@
 package org.dnd4.yorijori.domain.recipe.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
@@ -20,5 +21,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	List<Recipe> viewCountDesc(@Param("limit") int limit);
 
 	List<Recipe> findByviewCountGreaterThan(int viewCount, Pageable pageable);
+
+	List<Recipe> findByTimeLessThanEqualAndCreatedDateBetween(int time, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable);
+
 	List<Recipe> findBytitleContaining(String keyword, Pageable pageable);
 }

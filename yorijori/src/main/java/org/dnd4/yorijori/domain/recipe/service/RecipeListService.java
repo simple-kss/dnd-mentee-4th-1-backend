@@ -1,5 +1,6 @@
 package org.dnd4.yorijori.domain.recipe.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,19 +22,20 @@ public class RecipeListService {
 	private final RecipeRepository recipeRepository;
 	private final LabelRepository labelRepository;
 
-	public List<ResponseDto> findAll(int limit, int offset, String order) {
+	public List<ResponseDto> findAll(int limit, int offset, String order, LocalDateTime startDate,
+			LocalDateTime endDate, int timeRange) {
 		List<ResponseDto> result = new ArrayList<ResponseDto>();
 		if (order.equals("view")) {
 			Sort sort = Sort.by(Sort.Direction.DESC, "viewCount");
 			Pageable pageable = PageRequest.of(offset, limit, sort);
-			result = recipeRepository.findAll(pageable).stream().map(ResponseDto::new)
-					.collect(Collectors.toList());
+			result = recipeRepository.findByTimeLessThanEqualAndCreatedDateBetween(timeRange, startDate, endDate, pageable).stream()
+					.map(ResponseDto::new).collect(Collectors.toList());
 		}
 		if (order.equals("latest")) {
 			Sort sort = Sort.by(Sort.Direction.DESC, "id");
 			Pageable pageable = PageRequest.of(offset, limit, sort);
-			result = recipeRepository.findAll(pageable).stream().map(ResponseDto::new)
-					.collect(Collectors.toList());
+			result = recipeRepository.findByTimeLessThanEqualAndCreatedDateBetween(timeRange, startDate, endDate, pageable).stream()
+					.map(ResponseDto::new).collect(Collectors.toList());
 		}
 		return result;
 	}
