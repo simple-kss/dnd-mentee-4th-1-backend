@@ -16,5 +16,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 	@Query(value = "SELECT * FROM recipe WHERE step = :step LIMIT :limit OFFSET :offset", nativeQuery = true)
 	List<Recipe> findByStep(@Param("step") int step, @Param("limit") int limit, @Param("offset") int offset);
-
+	
 }
