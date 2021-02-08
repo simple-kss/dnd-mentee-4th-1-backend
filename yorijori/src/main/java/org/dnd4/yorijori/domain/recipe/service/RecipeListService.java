@@ -39,8 +39,19 @@ public class RecipeListService {
 	}
 
 	public List<ResponseDto> searchRecipes(String keyword, int limit, int offset, String order) {
-		List<ResponseDto> result = recipeRepository.findByTitleContaining(keyword, limit, offset, order).stream()
-				.map(ResponseDto::new).collect(Collectors.toList());
+		List<ResponseDto> result = new ArrayList<ResponseDto>();
+		if (order.equals("view")) {
+			Sort sort = Sort.by(Sort.Direction.DESC, "viewCount");
+			Pageable pageable = PageRequest.of(offset, limit, sort);
+			result = recipeRepository.findBytitleContaining(keyword, pageable).stream().map(ResponseDto::new)
+					.collect(Collectors.toList());
+		}
+		if (order.equals("latest")) {
+			Sort sort = Sort.by(Sort.Direction.DESC, "id");
+			Pageable pageable = PageRequest.of(offset, limit, sort);
+			result = recipeRepository.findBytitleContaining(keyword, pageable).stream().map(ResponseDto::new)
+					.collect(Collectors.toList());
+		}
 		return result;
 	}
 
