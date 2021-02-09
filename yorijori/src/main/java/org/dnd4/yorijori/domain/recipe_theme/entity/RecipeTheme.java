@@ -26,7 +26,10 @@ public class RecipeTheme {
 
     @Builder
     public RecipeTheme(Recipe recipe, Theme theme){
-        this.recipe = recipe;
         this.theme = theme;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

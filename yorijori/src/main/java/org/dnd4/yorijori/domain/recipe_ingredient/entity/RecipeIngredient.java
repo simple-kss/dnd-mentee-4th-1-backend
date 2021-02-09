@@ -30,10 +30,13 @@ public class RecipeIngredient {
     private YesOrNo isSub;
 
     @Builder
-    public RecipeIngredient(Recipe recipe, Ingredient ingredient, YesOrNo isSub){
-        this.recipe = recipe;
+    public RecipeIngredient( Ingredient ingredient, YesOrNo isSub){
+
         this.ingredient = ingredient;
         this.isSub = isSub;
     }
 
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 }

@@ -40,4 +40,7 @@ public class Rating extends BaseTimeEntity {
 		this.user = user;
 		this.star = star;
 	}
+	public void  setRecipe(Recipe recipe){
+		this.recipe =recipe;
+	}
 }
