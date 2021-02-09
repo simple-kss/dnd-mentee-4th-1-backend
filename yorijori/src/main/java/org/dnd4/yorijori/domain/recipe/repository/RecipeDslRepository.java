@@ -9,6 +9,7 @@ import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -24,7 +25,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 	}
 
 	public List<Recipe> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end,
-			String order) {
+			String order, String keyword) {
 		return queryFactory
 				.selectFrom(recipe)
 				.where(
@@ -32,12 +33,26 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 						eqStep(step), 
 						eqTime(time), 
 						goeStart(start), 
-						loeEnd(end))
+						loeEnd(end),
+						containTitle(keyword))
+				.where()
 				.orderBy(ordered(order))
 				.fetch();
 
 	}
-
+	
+	private BooleanBuilder containTitle(String keyword) {		
+		if (keyword == null) {
+			return null;
+		}
+		BooleanBuilder builder = new BooleanBuilder();
+		String[] arStrRegexMultiSpace = keyword.split("\\s+"); 
+		for (String str : arStrRegexMultiSpace) { 
+			builder.or(recipe.title.contains(str));
+		}
+		return builder;
+	}
+	
 	private BooleanExpression eqId(String id) {
 		if (id == null) {
 			return null;
