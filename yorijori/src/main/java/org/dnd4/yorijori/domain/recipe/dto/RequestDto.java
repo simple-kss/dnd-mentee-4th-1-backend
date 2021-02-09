@@ -21,7 +21,7 @@ public class RequestDto {
 
     @Embeddable
     @Data
-    public class Step {
+    static public class Step {
         private String image;
         private String description;
     }
