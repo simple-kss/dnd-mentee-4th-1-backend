@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import org.dnd4.yorijori.domain.label.repository.LabelRepository;
 import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
+import org.dnd4.yorijori.domain.recipe.repository.RecipeDslRepository;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class RecipeListService {
+	
 	private final RecipeRepository recipeRepository;
+	private final RecipeDslRepository recipeDslRepository;
 	private final LabelRepository labelRepository;
-
+	
+	public List<ResponseDto> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end) {
+		return recipeDslRepository.findAll(id, step, time, start, end).stream()
+				.map(ResponseDto::new).collect(Collectors.toList());
+	}
+	
 	public List<ResponseDto> findAll(int limit, int offset, String order, LocalDateTime startDate,
 			LocalDateTime endDate, int timeRange) {
 		List<ResponseDto> result = new ArrayList<ResponseDto>();

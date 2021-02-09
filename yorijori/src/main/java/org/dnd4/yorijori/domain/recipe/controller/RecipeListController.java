@@ -20,6 +20,23 @@ public class RecipeListController {
 
 	private final RecipeListService recipeListService;
 
+	@GetMapping("/test")
+	public List<ResponseDto> findById(@RequestParam(required = false) String id,
+			@RequestParam(required = false) String step, @RequestParam(required = false) String time,
+			@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) {
+		LocalDateTime start = null;
+		LocalDateTime end = null;
+		if (startDate != null) {
+			start = LocalDateTime.parse(startDate + " 00:00:00",
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		}
+		if (endDate != null) {
+			end = LocalDateTime.parse(endDate + " 23:59:59",
+					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		}
+		return recipeListService.findAll(id, step, time, start, end);
+	}
+
 	@GetMapping("/recipes")
 	public List<ResponseDto> recipeList(@RequestParam(required = false) String queryType,
 			@RequestParam(required = false) String keyword,
