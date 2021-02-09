@@ -25,8 +25,8 @@ public class RecipeListService {
 	private final RecipeDslRepository recipeDslRepository;
 	private final LabelRepository labelRepository;
 	
-	public List<ResponseDto> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end, String order, String keyword) {
-		return recipeDslRepository.findAll(id, step, time, start, end, order, keyword).stream()
+	public List<ResponseDto> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end, String order, String keyword, int limit, int offset) {
+		return recipeDslRepository.findAll(id, step, time, start, end, order, keyword, limit, offset).stream()
 				.map(ResponseDto::new).collect(Collectors.toList());
 	}
 	

@@ -25,7 +25,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 	}
 
 	public List<Recipe> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end,
-			String order, String keyword) {
+			String order, String keyword, int limit, int offset) {
 		return queryFactory
 				.selectFrom(recipe)
 				.where(
@@ -37,8 +37,9 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 						containTitle(keyword))
 				.where()
 				.orderBy(ordered(order))
+				.limit(limit)
+				.offset(offset)
 				.fetch();
-
 	}
 	
 	private BooleanBuilder containTitle(String keyword) {		

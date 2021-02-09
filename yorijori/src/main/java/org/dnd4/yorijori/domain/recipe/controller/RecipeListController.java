@@ -24,18 +24,18 @@ public class RecipeListController {
 	public List<ResponseDto> findById(@RequestParam(required = false) String id,
 			@RequestParam(required = false) String step, @RequestParam(required = false) String time,
 			@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate,
-			@RequestParam(required = false) String order, @RequestParam(required = false) String keyword) {
+			@RequestParam(required = false) String order, @RequestParam(required = false) String keyword,
+			@RequestParam(required = false, defaultValue = "10") int limit,
+			@RequestParam(required = false, defaultValue = "0") int offset) {
 		LocalDateTime start = null;
 		LocalDateTime end = null;
 		if (startDate != null) {
-			start = LocalDateTime.parse(startDate + " 00:00:00",
-					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			start = LocalDateTime.parse(startDate + " 00:00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		}
 		if (endDate != null) {
-			end = LocalDateTime.parse(endDate + " 23:59:59",
-					DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+			end = LocalDateTime.parse(endDate + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 		}
-		return recipeListService.findAll(id, step, time, start, end, order, keyword);
+		return recipeListService.findAll(id, step, time, start, end, order, keyword, limit, offset);
 	}
 
 	@GetMapping("/recipes")
