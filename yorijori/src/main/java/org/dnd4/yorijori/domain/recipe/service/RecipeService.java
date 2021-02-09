@@ -24,6 +24,7 @@ import org.dnd4.yorijori.domain.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -46,9 +47,56 @@ public class RecipeService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Recipe add(RequestDto requestDto){
+    public Long add(RequestDto requestDto){
 
         User user = userRepository.getOne(requestDto.getWriterId());
+
+        List<Ingredient> mainIngredients = ingredientRepository.findAllById(requestDto.getMainIngredientIds());
+        List<RecipeIngredient> mainRecipeIngredients = mainIngredients.stream()
+                .map(i->RecipeIngredient.builder()
+                        .ingredient(i)
+                        .isSub(YesOrNo.N).build())
+                .collect(Collectors.toList());
+
+        List<RecipeIngredient> recipeIngredients = new ArrayList<>(mainRecipeIngredients);
+//        recipeIngredientRepository.saveAll(mainRecipeIngredients);
+
+
+        if(requestDto.getSubIngredientIds() != null){
+            List<Ingredient> subIngredients = ingredientRepository.findAllById(requestDto.getSubIngredientIds());
+            List<RecipeIngredient> subRecipeIngredients = subIngredients.stream()
+                            .map(i->RecipeIngredient.builder()
+                                    .ingredient(i)
+                                    .isSub(YesOrNo.Y).build())
+                            .collect(Collectors.toList());
+
+            //recipeIngredientRepository.saveAll(subRecipeIngredients);
+            recipeIngredients.addAll(subRecipeIngredients);
+        }
+
+
+        List<Theme> themes = themeRepository.findAllById(requestDto.getThemeIds());
+        List<RecipeTheme> recipeThemes = themes.stream()
+                .map(t-> RecipeTheme.builder()
+                        .theme(t)
+                        .build())
+                .collect(Collectors.toList());
+
+        //recipeThemeRepository.saveAll(recipeThemes);
+
+        AtomicInteger sequence = new AtomicInteger();
+        List<Step> steps = requestDto.getSteps().stream()
+                .map((s)->Step.builder()
+                        .description(s.getDescription())
+                        .imageUrl(s.getImage())
+                        .sequence(sequence.getAndIncrement())
+                        .build())
+                .collect(Collectors.toList());
+
+//        stepRepository.saveAll(
+//                steps
+//        );
+
 
         Recipe recipe = Recipe.builder()
                 .title(requestDto.getTitle())
@@ -56,55 +104,15 @@ public class RecipeService {
                 .time(requestDto.getTime())
                 .thumbnail(requestDto.getThumbnail())
                 .user(user)
+                .recipeIngredients(recipeIngredients)
+                .recipeThemes(recipeThemes)
+                .steps(steps)
                 .build();
 
         recipeRepository.save(recipe);
 
 
-        List<Ingredient> mainIngredients = ingredientRepository.findAllById(requestDto.getMainIngredientIds());
-
-        recipeIngredientRepository.saveAll(
-                mainIngredients.stream()
-                        .map(i->RecipeIngredient.builder()
-                                .recipe(recipe)
-                                .ingredient(i)
-                                .isSub(YesOrNo.N).build())
-                        .collect(Collectors.toList())
-        );
-
-        List<Ingredient> subIngredients = ingredientRepository.findAllById(requestDto.getSubIngredientIds());
-        recipeIngredientRepository.saveAll(
-                subIngredients.stream()
-                        .map(i->RecipeIngredient.builder()
-                                .recipe(recipe)
-                                .ingredient(i)
-                                .isSub(YesOrNo.N).build())
-                        .collect(Collectors.toList())
-        );
-
-
-        List<Theme> themes = themeRepository.findAllById(requestDto.getThemeIds());
-
-        recipeThemeRepository.saveAll(themes.stream()
-                .map(t-> RecipeTheme.builder()
-                        .recipe(recipe)
-                        .theme(t)
-                        .build())
-                .collect(Collectors.toList())
-        );
-
-        AtomicInteger sequence = new AtomicInteger();
-
-        stepRepository.saveAll(requestDto.getSteps().stream()
-                .map((s)->Step.builder()
-                        .recipe(recipe)
-                        .description(s.getDescription())
-                        .imageUrl(s.getImage())
-                        .sequence(sequence.getAndIncrement())
-                        .build())
-                .collect(Collectors.toList())
-        );
-
-        return recipeRepository.getOne(recipe.getId());
+        return recipe.getId();
+//        return recipeRepository.getOne(recipe.getId());
     }
 }
