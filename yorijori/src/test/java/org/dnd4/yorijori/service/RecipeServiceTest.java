@@ -3,6 +3,8 @@ package org.dnd4.yorijori.service;
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
 import org.dnd4.yorijori.domain.ingredient.repository.IngredientRepository;
 import org.dnd4.yorijori.domain.recipe.dto.RequestDto;
+import org.dnd4.yorijori.domain.recipe.dto.StepDto;
+import org.dnd4.yorijori.domain.recipe.dto.UpdateRequestDto;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.dnd4.yorijori.domain.recipe.service.RecipeService;
@@ -45,22 +47,17 @@ public class RecipeServiceTest {
 
 
         //given
-        RequestDto requestDto = new RequestDto();
-        requestDto.setTitle("title");
-        requestDto.setThumbnail("http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg");
 
         List<Long> mainIngredientIds = new ArrayList<>();
 
         Ingredient ingredient = Ingredient.builder().name("재료").build();
         Long ingredientId = ingredientRepository.save(ingredient).getId();
         mainIngredientIds.add(ingredientId);
-        requestDto.setMainIngredientIds(mainIngredientIds);
 
         List<Long> themeIds = new ArrayList<>();
         Theme theme = Theme.builder().name("분위기").build();
         Long themeId = themeRepository.save(theme).getId();
         themeIds.add(themeId);
-        requestDto.setThemeIds(themeIds);
 
         RequestDto.Step step = new RequestDto.Step();
         step.setDescription("des");
@@ -68,14 +65,16 @@ public class RecipeServiceTest {
 
         List<RequestDto.Step> steps = new ArrayList<>();
         steps.add(step);
-        requestDto.setSteps(steps);
-
-        requestDto.setTime(15);
 
         User user = User.builder().name("soob").email("sjklf@slkj.com").build();
 
         Long userId = userRepository.save(user).getId();
-        requestDto.setWriterId(userId);
+
+        RequestDto requestDto = new RequestDto("title",
+                "http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
+                mainIngredientIds, null, themeIds, steps, 15, userId
+                );
+
 
         //when
         Long savedId = recipeService.add(requestDto);
@@ -96,6 +95,81 @@ public class RecipeServiceTest {
                         .toArray()
                 );
 
+        assertArrayEquals(
+                savedRecipe.getThemes().stream()
+                .map(Theme::getId)
+                .mapToLong(Long::longValue)
+                .toArray(),
+                requestDto.getThemeIds().stream()
+                .mapToLong(Long::longValue)
+                .toArray()
+        );
+
     }
 
+    @Test
+    public void 레시피수정() throws Exception{
+        //given
+        List<Long> mainIngredientIds = new ArrayList<>();
+
+        Ingredient ingredient = Ingredient.builder().name("재료1").build();
+        Long ingredientId = ingredientRepository.save(ingredient).getId();
+
+
+        mainIngredientIds.add(ingredientId);
+
+        List<Long> themeIds = new ArrayList<>();
+        Theme theme = Theme.builder().name("분위기").build();
+        Long themeId = themeRepository.save(theme).getId();
+        themeIds.add(themeId);
+
+        RequestDto.Step step = new RequestDto.Step();
+        step.setDescription("des");
+        step.setImage("http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg");
+
+        List<RequestDto.Step> steps = new ArrayList<>();
+        steps.add(step);
+
+        User user = User.builder().name("soob").email("sjklf@slkj.com").build();
+
+        Long userId = userRepository.save(user).getId();
+
+        RequestDto requestDto = new RequestDto("title",
+                "http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
+                mainIngredientIds, null, themeIds, steps, 15, userId
+        );
+
+        Long savedId = recipeService.add(requestDto);
+        Recipe savedRecipe = recipeRepository.getOne(savedId);
+
+        //when
+
+        String updateTitle = "updateTitle";
+        String updateThumbnail = "updateThumbnail";
+
+        Ingredient ingredient2 = Ingredient.builder().name("재료2").build();
+        Long ingredientId2 = ingredientRepository.save(ingredient2).getId();
+
+        mainIngredientIds.add(ingredientId2);
+
+        Theme theme2 = Theme.builder().name("분위기2").build();
+        Long themeId2 = themeRepository.save(theme2).getId();
+
+        themeIds.remove(0);
+        themeIds.add(themeId2);
+
+
+        String updateDescription = "updateDescription";
+        StepDto stepDto = new StepDto(savedRecipe.getSteps().get(0).getId(), updateDescription, "updateUrl", 0);
+
+        List<StepDto> stepDtos = new ArrayList<>();
+        stepDtos.add(stepDto);
+        UpdateRequestDto updateRequestDto = new UpdateRequestDto(updateTitle, updateThumbnail, mainIngredientIds, null,themeIds, stepDtos,5, 100);
+
+        Long updatedId = recipeService.update(savedId, updateRequestDto);
+
+        Recipe updatedRecipe = recipeRepository.getOne(updatedId);
+
+        assertEquals(updatedRecipe.getTitle(), updateRequestDto.getTitle());
+    }
 }
