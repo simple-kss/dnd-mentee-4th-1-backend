@@ -18,11 +18,12 @@ public class RecipeListController {
 
 	private final RecipeListService recipeListService;
 
-	@GetMapping("/recipe")
-	public List<ResponseDto> findById(@RequestParam(required = false) String id,
-			@RequestParam(required = false) String step, @RequestParam(required = false) String time,
-			@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate,
-			@RequestParam(required = false) String order, @RequestParam(required = false) String keyword,
+	@GetMapping("/recipes")
+	public List<ResponseDto> recipeList(@RequestParam(required = false) String queryType,
+			@RequestParam(required = false) String id, @RequestParam(required = false) String step,
+			@RequestParam(required = false) String time, @RequestParam(required = false) String startDate,
+			@RequestParam(required = false) String endDate, @RequestParam(required = false) String order,
+			@RequestParam(required = false) String keyword,
 			@RequestParam(required = false, defaultValue = "10") int limit,
 			@RequestParam(required = false, defaultValue = "0") int offset) {
 		LocalDateTime start = null;
@@ -32,6 +33,15 @@ public class RecipeListController {
 		}
 		if (endDate != null) {
 			end = LocalDateTime.parse(endDate + " 23:59:59", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		}
+		if(queryType.equals("search")) {
+			return recipeListService.findAll(id, step, time, start, end, order, keyword, limit, offset);
+		}
+		if(queryType.equals("viewTop")) {
+			return recipeListService.findAll(id, step, time, start, end, "view", keyword, limit, offset);
+		}
+		if(queryType.equals("labelTop")) {
+			return recipeListService.labelTop(start, end, limit, offset);	
 		}
 		return recipeListService.findAll(id, step, time, start, end, order, keyword, limit, offset);
 	}

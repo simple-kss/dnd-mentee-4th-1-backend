@@ -1,5 +1,6 @@
 package org.dnd4.yorijori.domain.recipe.repository;
 
+import static org.dnd4.yorijori.domain.label.entity.QLabel.label;
 import static org.dnd4.yorijori.domain.recipe.entity.QRecipe.recipe;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 @Repository
@@ -24,36 +26,42 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 		this.queryFactory = queryFactory;
 	}
 
-	public List<Recipe> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end,
-			String order, String keyword, int limit, int offset) {
-		return queryFactory
-				.selectFrom(recipe)
+	public List<Recipe> labelTop(LocalDateTime start, LocalDateTime end, int limit, int offset) {
+		List<Recipe> list =  queryFactory.select(recipe)
+				.from(label)
+				.join(recipe).on(recipe.id.eq(label.recipe.id))
 				.where(
-						eqId(id), 
-						eqStep(step), 
-						eqTime(time), 
-						goeStart(start), 
-						loeEnd(end),
-						containTitle(keyword))
-				.where()
-				.orderBy(ordered(order))
+						goeStartLabel(start), 
+						loeEndLabel(end)
+						)
+				.groupBy(label.recipe.id)
+				.orderBy(label.recipe.id.count().desc())
 				.limit(limit)
 				.offset(offset)
 				.fetch();
+		return list;
 	}
-	
-	private BooleanBuilder containTitle(String keyword) {		
+
+	public List<Recipe> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end,
+			String order, String keyword, int limit, int offset) {
+		return queryFactory
+				.selectFrom(recipe).where(eqId(id), eqStep(step), eqTime(time), goeStartRecipe(start),
+						loeEndRecipe(end), containTitle(keyword))
+				.where().orderBy(ordered(order)).limit(limit).offset(offset).fetch();
+	}
+
+	private BooleanBuilder containTitle(String keyword) {
 		if (keyword == null) {
 			return null;
 		}
 		BooleanBuilder builder = new BooleanBuilder();
-		String[] arStrRegexMultiSpace = keyword.split("\\s+"); 
-		for (String str : arStrRegexMultiSpace) { 
+		String[] arStrRegexMultiSpace = keyword.split("\\s+");
+		for (String str : arStrRegexMultiSpace) {
 			builder.or(recipe.title.contains(str));
 		}
 		return builder;
 	}
-	
+
 	private BooleanExpression eqId(String id) {
 		if (id == null) {
 			return null;
@@ -75,30 +83,45 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 		return recipe.time.eq(Integer.parseInt(time));
 	}
 
-	private BooleanExpression goeStart(LocalDateTime start) {
+	private BooleanExpression goeStartRecipe(LocalDateTime start) {
 		if (start == null) {
 			return null;
 		}
 		return recipe.createdDate.goe(start);
 	}
 
-	private BooleanExpression loeEnd(LocalDateTime end) {
+	private BooleanExpression loeEndRecipe(LocalDateTime end) {
 		if (end == null) {
 			return null;
 		}
 		return recipe.createdDate.loe(end);
 	}
 
+	private BooleanExpression goeStartLabel(LocalDateTime start) {
+		if (start == null) {
+			return null;
+		}
+		return label.createdDate.goe(start);
+	}
+
+	private BooleanExpression loeEndLabel(LocalDateTime end) {
+		if (end == null) {
+			return null;
+		}
+		return label.createdDate.loe(end);
+	}
+
 	private OrderSpecifier<?> ordered(String order) {
+		if (order == null) {
+			return recipe.id.asc();
+		}
 		if (order.equals("view")) {
 			return recipe.viewCount.desc();
 		}
-		else if(order.equals("latest")) {
+		if (order.equals("latest")) {
 			return recipe.id.desc();
 		}
-		else {
-			return recipe.id.asc();
-		}
+		return recipe.id.asc();
 	}
 
 }

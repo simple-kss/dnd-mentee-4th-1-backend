@@ -30,6 +30,12 @@ public class RecipeListService {
 				.map(ResponseDto::new).collect(Collectors.toList());
 	}
 	
+	public List<ResponseDto> labelTop(LocalDateTime start, LocalDateTime end, int limit, int offset){
+		List<ResponseDto> list = recipeDslRepository.labelTop(start, end, limit, offset).stream()
+				.map(ResponseDto::new).collect(Collectors.toList());
+		return list;
+	}
+	
 	public List<ResponseDto> findAll(int limit, int offset, String order, LocalDateTime startDate,
 			LocalDateTime endDate, int timeRange) {
 		List<ResponseDto> result = new ArrayList<ResponseDto>();
@@ -78,6 +84,8 @@ public class RecipeListService {
 	}
 
 	public List<ResponseDto> labelCountDesc(int limit, String startDate, String endDate) {
+		
+		
 		List<Long> recipe_id = labelRepository.labelCountDesc(limit, startDate, endDate);
 		List<Recipe> entity = new ArrayList<Recipe>();
 
