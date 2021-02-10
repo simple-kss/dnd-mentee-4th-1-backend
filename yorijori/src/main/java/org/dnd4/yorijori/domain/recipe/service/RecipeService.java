@@ -9,6 +9,7 @@ import org.dnd4.yorijori.domain.label.entity.Label;
 import org.dnd4.yorijori.domain.label.repository.LabelRepository;
 import org.dnd4.yorijori.domain.rating.repository.RatingRepository;
 import org.dnd4.yorijori.domain.recipe.dto.RequestDto;
+import org.dnd4.yorijori.domain.recipe.dto.UpdateRequestDto;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.dnd4.yorijori.domain.recipe_ingredient.entity.RecipeIngredient;
@@ -110,9 +111,62 @@ public class RecipeService {
                 .build();
 
         recipeRepository.save(recipe);
-
-
         return recipe.getId();
 //        return recipeRepository.getOne(recipe.getId());
+    }
+
+    @Transactional
+    public Long update(Long id, UpdateRequestDto updateRequestDto){
+
+        //recipe 수정
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + id));
+
+
+        List<Ingredient> mainIngredients = ingredientRepository.findAllById(updateRequestDto.getMainIngredientIds());
+        List<RecipeIngredient> mainRecipeIngredients = mainIngredients.stream()
+                .map(i->RecipeIngredient.builder()
+                        .ingredient(i)
+                        .isSub(YesOrNo.N).build())
+                .collect(Collectors.toList());
+
+        List<RecipeIngredient> recipeIngredients = new ArrayList<>(mainRecipeIngredients);
+
+        if(updateRequestDto.getSubIngredientIds() != null){
+            List<Ingredient> subIngredients = ingredientRepository.findAllById(updateRequestDto.getSubIngredientIds());
+            List<RecipeIngredient> subRecipeIngredients = subIngredients.stream()
+                    .map(i->RecipeIngredient.builder()
+                            .ingredient(i)
+                            .isSub(YesOrNo.Y).build())
+                    .collect(Collectors.toList());
+
+            recipeIngredients.addAll(subRecipeIngredients);
+        }
+
+
+        List<Theme> themes = themeRepository.findAllById(updateRequestDto.getThemeIds());
+        List<RecipeTheme> recipeThemes = themes.stream()
+                .map(t-> RecipeTheme.builder()
+                        .theme(t)
+                        .build())
+                .collect(Collectors.toList());
+
+
+        //step update
+        updateRequestDto.getSteps().forEach(stepDto -> {
+
+            Step step = stepRepository.getOne(stepDto.getId());
+            step.update(recipe , stepDto.getDescription(), stepDto.getImageUrl(), stepDto.getSequence());
+        });
+
+        recipe.update(updateRequestDto.getTitle(),
+                updateRequestDto.getSteps().size(),
+                updateRequestDto.getTime(),
+                updateRequestDto.getViewCount(),
+                updateRequestDto.getThumbnail(),
+                recipeIngredients,
+                recipeThemes
+        );
+
+        return id;
     }
 }
