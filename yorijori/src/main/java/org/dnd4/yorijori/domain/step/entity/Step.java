@@ -41,4 +41,11 @@ public class Step {
 	public void setRecipe(Recipe recipe) {
 		this.recipe = recipe;
 	}
+
+	public void update(Recipe recipe, String description, String imageUrl, int sequence ){
+		this.recipe =recipe;
+		this.description=description;
+		this.imageUrl=imageUrl;
+		this.sequence = sequence;
+	}
 }
