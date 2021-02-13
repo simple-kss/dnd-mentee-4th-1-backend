@@ -175,4 +175,11 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + id));
         recipeRepository.delete(recipe);
     }
+
+    @Transactional
+    public Recipe get(Long id){
+        Recipe recipe = recipeRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + id));
+
+        return recipe;
+    }
 }
