@@ -8,6 +8,7 @@ import org.dnd4.yorijori.domain.theme.entity.Theme;
 import org.dnd4.yorijori.domain.user.entity.User;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class ResponseDto {
@@ -15,30 +16,44 @@ public class ResponseDto {
     private String title;
     private String thumbnail;
 
-    private List<Ingredient> mainIngredients;
-    private List<Ingredient> subIngredients;
-    private List<Theme> themes;
-    private List<Step> steps;
+    private List<IngredientDto> mainIngredients;
+    private List<IngredientDto> subIngredients;
+    private List<ThemeDto> themes;
+    private List<StepDto> steps;
 
     private int time;
     private double starCount;
     private int wishCount;
     private int viewCount;
-    private User writer;
+    private UserDto writer;
 
     public ResponseDto(Recipe recipe){
         id = recipe.getId();
         title = recipe.getTitle();
         thumbnail = recipe.getThumbnail();
-        mainIngredients = recipe.getMainIngredients();
-        subIngredients = recipe.getSubIngredients();
-        themes = recipe.getThemes();
-        steps = recipe.getSteps();
+
+        mainIngredients = recipe.getMainIngredients().stream()
+                .map(i->new IngredientDto(i.getId(),i.getName()))
+                .collect(Collectors.toList());
+        subIngredients = recipe.getSubIngredients().stream()
+                .map(i->new IngredientDto(i.getId(),i.getName()))
+                .collect(Collectors.toList());
+
+        themes = recipe.getThemes().stream()
+                .map(t->new ThemeDto(t.getId(),t.getName()))
+                .collect(Collectors.toList());
+
+        steps = recipe.getSteps().stream()
+                .map(s->new StepDto(s.getId(), s.getDescription(),s.getImageUrl(),s.getSequence()))
+                .collect(Collectors.toList());
+
         time = recipe.getTime();
         starCount= recipe.getAverageStarCount();
         wishCount = recipe.getWishCount();
         viewCount = recipe.getViewCount();
-        writer = recipe.getUser();
+
+        User user = recipe.getUser();
+        writer = new UserDto(user.getId(),user.getName(), user.getEmail());
     }
 
 
