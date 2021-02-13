@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -170,6 +169,52 @@ public class RecipeServiceTest {
 
         Recipe updatedRecipe = recipeRepository.getOne(updatedId);
 
+        //then
         assertEquals(updatedRecipe.getTitle(), updateRequestDto.getTitle());
+    }
+    @Test
+    public void 레시피삭제() throws Exception{
+        //givne
+        List<Long> mainIngredientIds = new ArrayList<>();
+
+        Ingredient ingredient = Ingredient.builder().name("재료1").build();
+        Long ingredientId = ingredientRepository.save(ingredient).getId();
+
+
+        mainIngredientIds.add(ingredientId);
+
+        List<Long> themeIds = new ArrayList<>();
+        Theme theme = Theme.builder().name("분위기").build();
+        Long themeId = themeRepository.save(theme).getId();
+        themeIds.add(themeId);
+
+        RequestDto.Step step = new RequestDto.Step();
+        step.setDescription("des");
+        step.setImage("http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg");
+
+        List<RequestDto.Step> steps = new ArrayList<>();
+        steps.add(step);
+
+        User user = User.builder().name("soob").email("sjklf@slkj.com").build();
+
+        Long userId = userRepository.save(user).getId();
+
+        RequestDto requestDto = new RequestDto("title",
+                "http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
+                mainIngredientIds, null, themeIds, steps, 15, userId
+        );
+
+        Long savedId = recipeService.add(requestDto);
+        Recipe savedRecipe = recipeRepository.getOne(savedId);
+
+        //when
+        recipeService.delete(savedId);
+
+        Recipe deletedRecipe = recipeRepository.findById(savedId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + savedId));
+
+        //then
+
+      
+        fail("예외발생");
     }
 }
