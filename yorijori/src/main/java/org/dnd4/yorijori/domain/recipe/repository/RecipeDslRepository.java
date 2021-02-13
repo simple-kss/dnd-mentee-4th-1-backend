@@ -2,6 +2,10 @@ package org.dnd4.yorijori.domain.recipe.repository;
 
 import static org.dnd4.yorijori.domain.label.entity.QLabel.label;
 import static org.dnd4.yorijori.domain.recipe.entity.QRecipe.recipe;
+import static org.dnd4.yorijori.domain.recipe_ingredient.entity.QRecipeIngredient.recipeIngredient;
+import static org.dnd4.yorijori.domain.ingredient.entity.QIngredient.ingredient;
+import static org.dnd4.yorijori.domain.recipe_theme.entity.QRecipeTheme.recipeTheme;
+import static org.dnd4.yorijori.domain.theme.entity.QTheme.theme;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,12 +49,24 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 	public List<Recipe> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end,
 			String order, String keyword, int limit, int offset) {
 		return queryFactory
-				.selectFrom(recipe).where(eqId(id), eqStep(step), eqTime(time), goeStartRecipe(start),
-						loeEndRecipe(end), containTitle(keyword))
-				.where().orderBy(ordered(order)).limit(limit).offset(offset).fetch();
+				.select(recipe)
+				.from(recipe)
+				.leftJoin(recipeIngredient).on(recipe.eq(recipeIngredient.recipe))
+				.leftJoin(ingredient).on(ingredient.eq(recipeIngredient.ingredient))
+				.leftJoin(recipeTheme).on(recipe.eq(recipeTheme.recipe))
+				.leftJoin(theme).on(theme.eq(recipeTheme.theme))
+				.distinct()
+				.where(
+						eqId(id), 
+						eqStep(step), 
+						eqTime(time), 
+						goeStartRecipe(start),
+						loeEndRecipe(end), 
+						containKeyword(keyword))
+				.orderBy(ordered(order)).limit(limit).offset(offset).fetch();
 	}
 
-	private BooleanBuilder containTitle(String keyword) {
+	private BooleanBuilder containKeyword(String keyword) {
 		if (keyword == null) {
 			return null;
 		}
@@ -58,10 +74,12 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 		String[] arStrRegexMultiSpace = keyword.split("\\s+");
 		for (String str : arStrRegexMultiSpace) {
 			builder.or(recipe.title.contains(str));
+			builder.or(ingredient.name.contains(str));
+			builder.or(theme.name.contains(str));
 		}
 		return builder;
 	}
-
+	
 	private BooleanExpression eqId(String id) {
 		if (id == null) {
 			return null;
