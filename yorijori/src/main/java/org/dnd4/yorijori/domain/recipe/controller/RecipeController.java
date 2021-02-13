@@ -40,5 +40,9 @@ public class RecipeController {
         return new Result(new ResponseDto(recipeService.get(id)));
     }
 
-
+    @DeleteMapping("/{id}")
+    public Result delete (@PathVariable Long id){
+        recipeService.delete(id);
+        return new Result(true);
+    }
 }
