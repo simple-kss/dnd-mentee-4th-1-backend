@@ -33,4 +33,12 @@ public class RecipeController {
         recipeService.update(id, reqDto);
         return new Result(new ResponseDto(recipeService.get(id)));
     }
+
+    @PostMapping("")
+    public Result add (@RequestBody @Validated RequestDto reqDto){
+        Long id = recipeService.add(reqDto);
+        return new Result(new ResponseDto(recipeService.get(id)));
+    }
+
+
 }
