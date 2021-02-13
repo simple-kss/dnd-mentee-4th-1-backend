@@ -49,7 +49,7 @@ public class Recipe extends BaseTimeEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
 	@OneToMany(mappedBy = "recipe" ,cascade = CascadeType.ALL)
