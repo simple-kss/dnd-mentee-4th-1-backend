@@ -1,11 +1,14 @@
 package org.dnd4.yorijori.domain.recipe.dto;
 
-import lombok.Data;
-
-import javax.persistence.Embeddable;
 import java.util.List;
 
+import javax.persistence.Embeddable;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 @Data
+@AllArgsConstructor
 public class RequestDto {
 
     private String title;
@@ -21,7 +24,7 @@ public class RequestDto {
 
     @Embeddable
     @Data
-    public class Step {
+    static public class Step {
         private String image;
         private String description;
     }

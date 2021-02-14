@@ -1,5 +1,6 @@
 package org.dnd4.yorijori.domain.ingredient.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,4 +18,8 @@ public class Ingredient {
     private Long id;
 
     private String name;
+    @Builder
+    public Ingredient(String name){
+        this.name = name;
+    }
 }

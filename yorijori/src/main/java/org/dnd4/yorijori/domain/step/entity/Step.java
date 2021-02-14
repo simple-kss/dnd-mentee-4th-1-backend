@@ -32,10 +32,20 @@ public class Step {
 	private int sequence;
 
 	@Builder
-	public Step(Recipe recipe, String description, String imageUrl, int sequence){
-		this.recipe = recipe;
+	public Step(String description, String imageUrl, int sequence){
 		this.description = description;
 		this.imageUrl = imageUrl;
+		this.sequence = sequence;
+	}
+
+	public void setRecipe(Recipe recipe) {
+		this.recipe = recipe;
+	}
+
+	public void update(Recipe recipe, String description, String imageUrl, int sequence ){
+		this.recipe =recipe;
+		this.description=description;
+		this.imageUrl=imageUrl;
 		this.sequence = sequence;
 	}
 }
