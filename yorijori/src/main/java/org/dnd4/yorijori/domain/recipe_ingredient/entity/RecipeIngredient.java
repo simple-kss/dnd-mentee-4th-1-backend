@@ -1,10 +1,12 @@
 package org.dnd4.yorijori.domain.recipe_ingredient.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.dnd4.yorijori.domain.common.YesOrNo;
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
+import org.dnd4.yorijori.domain.user.entity.User;
 
 
 import javax.persistence.*;
@@ -27,4 +29,14 @@ public class RecipeIngredient {
 
     private YesOrNo isSub;
 
+    @Builder
+    public RecipeIngredient( Ingredient ingredient, YesOrNo isSub){
+
+        this.ingredient = ingredient;
+        this.isSub = isSub;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
 }

@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.dnd4.yorijori.domain.user_follow.entity.UserFollow;
@@ -31,4 +32,9 @@ public class User {
 	@OneToMany(mappedBy = "following")
 	private List<UserFollow> following = new ArrayList<>();
 
+	@Builder
+	public User(String name, String email){
+		this.name = name;
+		this.email = email;
+	}
 }
