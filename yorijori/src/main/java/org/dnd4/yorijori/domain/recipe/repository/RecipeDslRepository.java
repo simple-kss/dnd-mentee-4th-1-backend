@@ -46,7 +46,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 		return list;
 	}
 
-	public List<Recipe> findAll(String id, String step, String time, LocalDateTime start, LocalDateTime end,
+	public List<Recipe> findAll(String step, String time, LocalDateTime start, LocalDateTime end,
 			String order, String keyword, int limit, int offset) {
 		return queryFactory
 				.select(recipe)
@@ -55,8 +55,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 				.leftJoin(ingredient).on(ingredient.eq(recipeIngredient.ingredient))
 				.leftJoin(recipeTheme).on(recipe.eq(recipeTheme.recipe))
 				.leftJoin(theme).on(theme.eq(recipeTheme.theme))
-				.where(
-						eqId(id), 
+				.where( 
 						eqStep(step), 
 						eqTime(time), 
 						goeStartRecipe(start),
@@ -78,13 +77,6 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 			builder.or(theme.name.contains(str));
 		}
 		return builder;
-	}
-	
-	private BooleanExpression eqId(String id) {
-		if (id == null) {
-			return null;
-		}
-		return recipe.id.eq(Long.parseLong(id));
 	}
 
 	private BooleanExpression eqStep(String step) {
