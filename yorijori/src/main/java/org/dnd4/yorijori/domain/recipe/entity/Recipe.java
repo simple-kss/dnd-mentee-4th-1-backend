@@ -48,43 +48,81 @@ public class Recipe extends BaseTimeEntity {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe" ,cascade = CascadeType.ALL)
 	private List<Step> steps = new ArrayList<>();
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<Rating> ratings = new ArrayList<>();
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<Comment> comments = new ArrayList<>();
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<RecipeTheme> recipeThemes = new ArrayList<>();
 
-	@OneToMany(mappedBy = "recipe")
+	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<Label> labels = new ArrayList<>();
 
+	public void addRecipeIngredient(RecipeIngredient recipeIngredient) {
+		this.recipeIngredients.add(recipeIngredient);
+		recipeIngredient.setRecipe(this);
+	}
+	public void addStep(Step step){
+		this.steps.add(step);
+		step.setRecipe(this);
+	}
+	public void addRating(Rating rating){
+		this.ratings.add(rating);
+		rating.setRecipe(this);
+	}
+	public void addRecipeTheme(RecipeTheme recipeTheme){
+		this.recipeThemes.add(recipeTheme);
+		recipeTheme.setRecipe(this);
+	}
+
+
+
 	@Builder
-	public Recipe(String title, int step, int time,String thumbnail, User user){
+	public Recipe(String title,
+				  int step,
+				  int time,
+				  String thumbnail,
+				  User user,
+				  List<RecipeIngredient> recipeIngredients,
+				  List<Step> steps,
+				  List<RecipeTheme> recipeThemes)
+	{
 		this.title = title;
 		this.step = step;
 		this.time = time;
 		this.thumbnail = thumbnail;
 		this.user = user;
+
+		for(RecipeIngredient recipeIngredient : recipeIngredients){
+			addRecipeIngredient(recipeIngredient);
+		}
+		for(Step step_ : steps){
+			addStep(step_);
+		}
+		for(RecipeTheme recipeTheme : recipeThemes){
+			addRecipeTheme(recipeTheme);
+		}
+
 	}
 
 	public List<Ingredient> getMainIngredients(){
 		return this.getRecipeIngredients().stream()
-				.filter(i->i.getIsSub().equals(YesOrNo.Y))
+				.filter(i->i.getIsSub().equals(YesOrNo.N))
 				.map(RecipeIngredient::getIngredient)
 				.collect(Collectors.toList());
 	}
 
 	public List<Ingredient> getSubIngredients(){
 		return this.getRecipeIngredients().stream()
-				.filter(i->i.getIsSub().equals(YesOrNo.N))
+				.filter(i->i.getIsSub().equals(YesOrNo.Y))
 				.map(RecipeIngredient::getIngredient)
 				.collect(Collectors.toList());
 	}
@@ -106,4 +144,29 @@ public class Recipe extends BaseTimeEntity {
 	public int getWishCount(){
 		return this.getLabels().size();
 	}
+
+	public void update(String title,
+					   int step,
+					   int time,
+					   int viewCount,
+					   String thumbnail,
+					   List<RecipeIngredient> recipeIngredients,
+					   List<RecipeTheme> recipeThemes
+	){
+		this.title = title;
+		this.step = step;
+		this.time = time;
+		this.viewCount = viewCount;
+		this.thumbnail = thumbnail;
+
+		for(RecipeIngredient recipeIngredient : recipeIngredients){
+			addRecipeIngredient(recipeIngredient);
+		}
+
+		for(RecipeTheme recipeTheme : recipeThemes){
+			addRecipeTheme(recipeTheme);
+		}
+
+	}
+
 }
