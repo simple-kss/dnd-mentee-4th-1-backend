@@ -55,7 +55,6 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 				.leftJoin(ingredient).on(ingredient.eq(recipeIngredient.ingredient))
 				.leftJoin(recipeTheme).on(recipe.eq(recipeTheme.recipe))
 				.leftJoin(theme).on(theme.eq(recipeTheme.theme))
-				.distinct()
 				.where(
 						eqId(id), 
 						eqStep(step), 
@@ -63,6 +62,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 						goeStartRecipe(start),
 						loeEndRecipe(end), 
 						containKeyword(keyword))
+				.groupBy(recipe)
 				.orderBy(ordered(order)).limit(limit).offset(offset).fetch();
 	}
 
@@ -131,7 +131,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 
 	private OrderSpecifier<?> ordered(String order) {
 		if (order == null) {
-			return recipe.id.asc();
+			return recipe.count().desc();
 		}
 		if (order.equals("view")) {
 			return recipe.viewCount.desc();
@@ -139,7 +139,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 		if (order.equals("latest")) {
 			return recipe.id.desc();
 		}
-		return recipe.id.asc();
+		return recipe.count().desc();
 	}
 
 }
