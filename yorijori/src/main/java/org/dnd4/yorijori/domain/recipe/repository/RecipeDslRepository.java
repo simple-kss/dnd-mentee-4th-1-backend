@@ -49,8 +49,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 	public List<Recipe> findAll(String step, String time, LocalDateTime start, LocalDateTime end,
 			String order, String keyword, int limit, int offset) {
 		return queryFactory
-				.select(recipe)
-				.from(recipe)
+				.selectFrom(recipe)
 				.leftJoin(recipeIngredient).on(recipe.eq(recipeIngredient.recipe))
 				.leftJoin(ingredient).on(ingredient.eq(recipeIngredient.ingredient))
 				.leftJoin(recipeTheme).on(recipe.eq(recipeTheme.recipe))
@@ -129,7 +128,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 			return recipe.viewCount.desc();
 		}
 		if (order.equals("latest")) {
-			return recipe.id.desc();
+			return recipe.createdDate.desc();
 		}
 		return recipe.count().desc();
 	}
