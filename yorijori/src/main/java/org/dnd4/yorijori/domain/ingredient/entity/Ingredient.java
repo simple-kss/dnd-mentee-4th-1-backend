@@ -3,6 +3,7 @@ package org.dnd4.yorijori.domain.ingredient.entity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.dnd4.yorijori.domain.common.YesOrNo;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 
 import javax.persistence.Entity;
@@ -22,11 +23,13 @@ public class Ingredient {
     private String name;
     private String unit;
     private String quantity;
+    private YesOrNo isSub;
     @Builder
-    public Ingredient(String name, String unit, String quantity){
+    public Ingredient(String name, String unit, String quantity,YesOrNo isSub){
         this.name = name;
         this.unit = unit;
         this.quantity = quantity;
+        this.isSub = isSub;
     }
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
