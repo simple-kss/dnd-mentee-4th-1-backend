@@ -43,7 +43,14 @@ public class Recipe extends BaseTimeEntity {
 	private int viewCount;
 	private String thumbnail;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="pid")
+	private Recipe parent;
+
+	@OneToMany(mappedBy = "parent")
+	private List<Recipe> child = new ArrayList<>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
@@ -80,6 +87,13 @@ public class Recipe extends BaseTimeEntity {
 	public void addRecipeTheme(RecipeTheme recipeTheme){
 		this.recipeThemes.add(recipeTheme);
 		recipeTheme.setRecipe(this);
+	}
+	public void setParent(Recipe recipe){
+		this.parent = recipe;
+	}
+	public void addChildRecipe(Recipe child){
+		this.child.add(child);
+		child.setParent(this);
 	}
 
 	@Builder
