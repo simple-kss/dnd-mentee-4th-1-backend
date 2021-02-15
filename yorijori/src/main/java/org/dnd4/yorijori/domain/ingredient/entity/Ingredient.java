@@ -22,10 +22,10 @@ public class Ingredient {
     private Recipe recipe;
     private String name;
     private String unit;
-    private String quantity;
+    private int quantity;
     private YesOrNo isSub;
     @Builder
-    public Ingredient(String name, String unit, String quantity,YesOrNo isSub){
+    public Ingredient(String name, String unit, int quantity,YesOrNo isSub){
         this.name = name;
         this.unit = unit;
         this.quantity = quantity;
