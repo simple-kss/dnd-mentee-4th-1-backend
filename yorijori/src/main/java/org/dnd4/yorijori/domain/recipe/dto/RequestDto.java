@@ -21,6 +21,7 @@ public class RequestDto {
 
     private int time;
     private Long writerId;
+    private Long pid;
 
     @Embeddable
     @Data

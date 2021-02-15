@@ -102,6 +102,10 @@ public class RecipeService {
                 .steps(steps)
                 .build();
 
+        if(requestDto.getPid() != null){
+            Recipe parentRecipe = recipeRepository.findById(requestDto.getPid()).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + requestDto.getPid()));
+            recipe.setParent(parentRecipe);
+        }
         recipeRepository.save(recipe);
         return recipe.getId();
     }
@@ -151,13 +155,29 @@ public class RecipeService {
             ingredients.addAll(subIngredients);
         }
 
+        if(updateRequestDto.getPid() == null){
+            recipe.update(updateRequestDto.getTitle(),
+                    updateRequestDto.getSteps().size(),
+                    updateRequestDto.getTime(),
+                    updateRequestDto.getViewCount(),
+                    updateRequestDto.getThumbnail(),
+                    ingredients,
+                    recipeThemes,
+                    null
+            );
+            return id;
+        }
+
+        Recipe parentRecipe = recipeRepository.findById(updateRequestDto.getPid()).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + updateRequestDto.getPid()));
+
         recipe.update(updateRequestDto.getTitle(),
                 updateRequestDto.getSteps().size(),
                 updateRequestDto.getTime(),
                 updateRequestDto.getViewCount(),
                 updateRequestDto.getThumbnail(),
                 ingredients,
-                recipeThemes
+                recipeThemes,
+                parentRecipe
         );
 
         return id;

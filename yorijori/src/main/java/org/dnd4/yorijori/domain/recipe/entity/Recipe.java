@@ -160,7 +160,8 @@ public class Recipe extends BaseTimeEntity {
 					   int viewCount,
 					   String thumbnail,
 					   List<Ingredient> ingredients,
-					   List<RecipeTheme> recipeThemes
+					   List<RecipeTheme> recipeThemes,
+					   Recipe parent
 	){
 		this.title = title;
 		this.step = step;
@@ -175,6 +176,7 @@ public class Recipe extends BaseTimeEntity {
 		for(RecipeTheme recipeTheme : recipeThemes){
 			addRecipeTheme(recipeTheme);
 		}
+		this.parent=parent;
 
 	}
 
