@@ -33,10 +33,10 @@ public class ResponseDto {
         thumbnail = recipe.getThumbnail();
 
         mainIngredients = recipe.getMainIngredients().stream()
-                .map(i->new IngredientDto(i.getId(),i.getName()))
+                .map(i->new IngredientDto(i.getName(),i.getUnit(), i.getQuantity()))
                 .collect(Collectors.toList());
         subIngredients = recipe.getSubIngredients().stream()
-                .map(i->new IngredientDto(i.getId(),i.getName()))
+                .map(i->new IngredientDto(i.getName(),i.getUnit(), i.getQuantity()))
                 .collect(Collectors.toList());
 
         themes = recipe.getThemes().stream()

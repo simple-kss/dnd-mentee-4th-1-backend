@@ -10,8 +10,8 @@ public class UpdateRequestDto {
     private String title;
     private String thumbnail;
 
-    private List<Long> mainIngredientIds;
-    private List<Long> subIngredientIds;
+    private List<IngredientDto> mainIngredients;
+    private List<IngredientDto> subIngredients;
     private List<Long> themeIds;
     private List<StepDto> steps;
 
