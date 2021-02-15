@@ -113,27 +113,6 @@ public class RecipeService {
         Recipe recipe = recipeRepository.findById(id).orElseThrow(()->new IllegalArgumentException("해당 아이디의 레시피가 없습니다. id : " + id));
 
 
-        List<Ingredient> mainIngredients = ingredientRepository.findAllById(updateRequestDto.getMainIngredientIds());
-        List<RecipeIngredient> mainRecipeIngredients = mainIngredients.stream()
-                .map(i->RecipeIngredient.builder()
-                        .ingredient(i)
-                        .isSub(YesOrNo.N).build())
-                .collect(Collectors.toList());
-
-        List<RecipeIngredient> recipeIngredients = new ArrayList<>(mainRecipeIngredients);
-
-        if(updateRequestDto.getSubIngredientIds() != null){
-            List<Ingredient> subIngredients = ingredientRepository.findAllById(updateRequestDto.getSubIngredientIds());
-            List<RecipeIngredient> subRecipeIngredients = subIngredients.stream()
-                    .map(i->RecipeIngredient.builder()
-                            .ingredient(i)
-                            .isSub(YesOrNo.Y).build())
-                    .collect(Collectors.toList());
-
-            recipeIngredients.addAll(subRecipeIngredients);
-        }
-
-
         List<Theme> themes = themeRepository.findAllById(updateRequestDto.getThemeIds());
         List<RecipeTheme> recipeThemes = themes.stream()
                 .map(t-> RecipeTheme.builder()
@@ -149,12 +128,35 @@ public class RecipeService {
             step.update(recipe , stepDto.getDescription(), stepDto.getImageUrl(), stepDto.getSequence());
         });
 
+        List<Ingredient> ingredients= updateRequestDto.getMainIngredients().stream()
+                .map((i)->Ingredient.builder()
+                        .name(i.getName())
+                        .unit(i.getUnit())
+                        .quantity(i.getQuantity())
+                        .isSub(YesOrNo.N)
+                        .build())
+                .collect(Collectors.toList());
+
+
+        if(updateRequestDto.getSubIngredients() != null){
+            List<Ingredient> subIngredients = updateRequestDto.getMainIngredients().stream()
+                    .map((i)->Ingredient.builder()
+                            .name(i.getName())
+                            .unit(i.getUnit())
+                            .quantity(i.getQuantity())
+                            .isSub(YesOrNo.Y)
+                            .build())
+                    .collect(Collectors.toList());
+
+            ingredients.addAll(subIngredients);
+        }
+
         recipe.update(updateRequestDto.getTitle(),
                 updateRequestDto.getSteps().size(),
                 updateRequestDto.getTime(),
                 updateRequestDto.getViewCount(),
                 updateRequestDto.getThumbnail(),
-                recipeIngredients,
+                ingredients,
                 recipeThemes
         );
 
