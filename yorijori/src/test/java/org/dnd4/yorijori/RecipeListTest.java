@@ -7,8 +7,10 @@ import java.util.List;
 
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
 import org.dnd4.yorijori.domain.ingredient.repository.IngredientRepository;
+import org.dnd4.yorijori.domain.recipe.dto.IngredientDto;
 import org.dnd4.yorijori.domain.recipe.dto.RequestDto;
 import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
+import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
 import org.dnd4.yorijori.domain.recipe.service.RecipeService;
@@ -49,10 +51,10 @@ public class RecipeListTest {
 	
     @Before
     public void 초기화() {
-    	List<Long> mainIngredientIds = new ArrayList<>();
-        Ingredient ingredient = Ingredient.builder().name("재료").build();
-        Long ingredientId = ingredientRepository.save(ingredient).getId();
-        mainIngredientIds.add(ingredientId);
+
+        List<IngredientDto> mainIngredientDtos = new ArrayList<>();
+        IngredientDto ingredientDto = new IngredientDto("재료", "개", 1);
+        mainIngredientDtos.add(ingredientDto);
 
         List<Long> themeIds = new ArrayList<>();
         Theme theme = Theme.builder().name("분위기").build();
@@ -61,7 +63,7 @@ public class RecipeListTest {
 
         RequestDto.Step step = new RequestDto.Step();
         step.setDescription("des");
-        step.setImage("http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg");
+        step.setImageUrl("http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg");
 
         List<RequestDto.Step> steps = new ArrayList<>();
         steps.add(step);
@@ -72,7 +74,7 @@ public class RecipeListTest {
 
         RequestDto requestDto = new RequestDto("title",
                 "http://image.dongascience.com/Photo/2020/03/5bddba7b6574b95d37b6079c199d7101.jpg",
-                mainIngredientIds, null, themeIds, steps, 15, userId
+                mainIngredientDtos, null, themeIds, steps, 15, userId, null
                 );
 
         savedId = recipeService.add(requestDto);
@@ -98,4 +100,13 @@ public class RecipeListTest {
         List<ResponseDto> keywordThemeSearch = recipeListService.findAll(null, null, null, null, null, "분위기", 10, 0);
         assertEquals(keywordThemeSearch.get(0).getId(), savedId);
 	}
+
+
+	@Test
+    public void 레시피등록() throws Exception{
+
+        Recipe savedRecipe = recipeRepository.getOne(savedId);
+
+        assertEquals(savedRecipe.getTitle(), "title");
+    }
 }
