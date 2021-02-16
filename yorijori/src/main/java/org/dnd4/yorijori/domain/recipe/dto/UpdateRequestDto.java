@@ -6,6 +6,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class UpdateRequestDto {
     private String title;
     private String thumbnail;
