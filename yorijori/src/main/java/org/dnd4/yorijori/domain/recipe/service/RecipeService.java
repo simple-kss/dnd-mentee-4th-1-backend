@@ -132,6 +132,9 @@ public class RecipeService {
             step.update(recipe , stepDto.getDescription(), stepDto.getImageUrl(), stepDto.getSequence());
         });
 
+        //delete ingredients
+        ingredientRepository.deleteByRecipeId(id);
+
         List<Ingredient> ingredients= updateRequestDto.getMainIngredients().stream()
                 .map((i)->Ingredient.builder()
                         .name(i.getName())
@@ -143,7 +146,7 @@ public class RecipeService {
 
 
         if(updateRequestDto.getSubIngredients() != null){
-            List<Ingredient> subIngredients = updateRequestDto.getMainIngredients().stream()
+            List<Ingredient> subIngredients = updateRequestDto.getSubIngredients().stream()
                     .map((i)->Ingredient.builder()
                             .name(i.getName())
                             .unit(i.getUnit())
