@@ -4,12 +4,11 @@ import static junit.framework.TestCase.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
 import org.dnd4.yorijori.domain.ingredient.repository.IngredientRepository;
-import org.dnd4.yorijori.domain.recipe.dto.IngredientDto;
-import org.dnd4.yorijori.domain.recipe.dto.RequestDto;
-import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
+import org.dnd4.yorijori.domain.recipe.dto.*;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
@@ -108,5 +107,35 @@ public class RecipeListTest {
         Recipe savedRecipe = recipeRepository.getOne(savedId);
 
         assertEquals(savedRecipe.getTitle(), "title");
+        assertEquals(savedRecipe.getMainIngredients().get(0).getName(), "재료");
+
+        assertEquals(savedRecipe.getStep(), 1);
+
     }
+
+    @Test
+    public void 레시피수정() throws Exception{
+
+        Recipe savedRecipe = recipeRepository.getOne(savedId);
+
+        List<IngredientDto> mainIngredientDtos = new ArrayList<>();
+        IngredientDto ingredientDto = new IngredientDto("재료2", "개", 1);
+        mainIngredientDtos.add(ingredientDto);
+
+        List<Long> themeIds = savedRecipe.getThemes().stream().map(t->t.getId()).collect(Collectors.toList());
+
+        List<StepDto> stepDtos= savedRecipe.getSteps().stream().map(s->new StepDto(s.getId(), s.getDescription(), s.getImageUrl(), s.getSequence())).collect(Collectors.toList());
+
+
+
+        UpdateRequestDto updateRequestDto = new UpdateRequestDto("updateTitle", "updateThumbnail", mainIngredientDtos, null, themeIds, stepDtos,10,1,null);
+
+        Long updatedId = recipeService.update(savedId, updateRequestDto);
+
+        Recipe updatedRecipe = recipeRepository.getOne(updatedId);
+
+        assertEquals( "재료2", updatedRecipe.getMainIngredients().get(0).getName());
+
+    }
+
 }
