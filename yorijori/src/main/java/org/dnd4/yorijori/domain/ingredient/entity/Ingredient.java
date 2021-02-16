@@ -23,6 +23,7 @@ public class Ingredient {
     private String name;
     private String unit;
     private int quantity;
+    @Enumerated(EnumType.STRING)
     private YesOrNo isSub;
     @Builder
     public Ingredient(String name, String unit, int quantity,YesOrNo isSub){
@@ -34,4 +35,5 @@ public class Ingredient {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
+
 }
