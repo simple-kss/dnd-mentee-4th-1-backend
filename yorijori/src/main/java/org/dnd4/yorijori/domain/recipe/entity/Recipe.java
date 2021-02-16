@@ -169,6 +169,7 @@ public class Recipe extends BaseTimeEntity {
 		this.viewCount = viewCount;
 		this.thumbnail = thumbnail;
 
+		this.ingredients = new ArrayList<>();
 		for(Ingredient ingredient : ingredients){
 			addIngredient(ingredient);
 		}
