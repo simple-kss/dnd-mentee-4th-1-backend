@@ -1,11 +1,6 @@
 package org.dnd4.yorijori.domain.comment.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
@@ -15,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -23,13 +21,20 @@ public class Comment extends BaseTimeEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "recipe_id", nullable = false)
 	private Recipe recipe;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="pid")
+	private Comment parent;
+
+	@OneToMany(mappedBy = "parent")
+	private List<Comment> child = new ArrayList<>();
 
 	private String content;
 	private String imageUrl;
