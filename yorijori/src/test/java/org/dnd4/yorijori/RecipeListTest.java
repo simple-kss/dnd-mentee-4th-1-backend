@@ -52,7 +52,7 @@ public class RecipeListTest {
     public void 초기화() {
 
         List<IngredientDto> mainIngredientDtos = new ArrayList<>();
-        IngredientDto ingredientDto = new IngredientDto("재료", "개", 1);
+        IngredientDto ingredientDto = new IngredientDto("재료");
         mainIngredientDtos.add(ingredientDto);
 
         List<Long> themeIds = new ArrayList<>();
@@ -119,7 +119,7 @@ public class RecipeListTest {
         Recipe savedRecipe = recipeRepository.getOne(savedId);
 
         List<IngredientDto> mainIngredientDtos = new ArrayList<>();
-        IngredientDto ingredientDto = new IngredientDto("재료2", "개", 1);
+        IngredientDto ingredientDto = new IngredientDto("재료2");
         mainIngredientDtos.add(ingredientDto);
 
         List<Long> themeIds = savedRecipe.getThemes().stream().map(t->t.getId()).collect(Collectors.toList());

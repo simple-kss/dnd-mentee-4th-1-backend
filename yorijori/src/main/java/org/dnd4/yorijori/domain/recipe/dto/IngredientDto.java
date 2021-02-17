@@ -7,6 +7,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class IngredientDto {
     private String name;
-    private String unit;
-    private int quantity;
 }

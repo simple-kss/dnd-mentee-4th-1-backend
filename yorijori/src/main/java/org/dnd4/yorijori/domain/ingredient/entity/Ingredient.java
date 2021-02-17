@@ -21,15 +21,12 @@ public class Ingredient {
     private Recipe recipe;
 
     private String name;
-    private String unit;
-    private int quantity;
+
     @Enumerated(EnumType.STRING)
     private YesOrNo isSub;
     @Builder
-    public Ingredient(String name, String unit, int quantity,YesOrNo isSub){
+    public Ingredient(String name,YesOrNo isSub){
         this.name = name;
-        this.unit = unit;
-        this.quantity = quantity;
         this.isSub = isSub;
     }
     public void setRecipe(Recipe recipe) {

@@ -60,8 +60,6 @@ public class RecipeService {
         List<Ingredient> ingredients= requestDto.getMainIngredients().stream()
                 .map((i)->Ingredient.builder()
                         .name(i.getName())
-                        .unit(i.getUnit())
-                        .quantity(i.getQuantity())
                         .isSub(YesOrNo.N)
                         .build())
                 .collect(Collectors.toList());
@@ -71,8 +69,6 @@ public class RecipeService {
             List<Ingredient> subIngredients = requestDto.getMainIngredients().stream()
                     .map((i)->Ingredient.builder()
                             .name(i.getName())
-                            .unit(i.getUnit())
-                            .quantity(i.getQuantity())
                             .isSub(YesOrNo.Y)
                             .build())
                     .collect(Collectors.toList());
@@ -138,8 +134,6 @@ public class RecipeService {
         List<Ingredient> ingredients= updateRequestDto.getMainIngredients().stream()
                 .map((i)->Ingredient.builder()
                         .name(i.getName())
-                        .unit(i.getUnit())
-                        .quantity(i.getQuantity())
                         .isSub(YesOrNo.N)
                         .build())
                 .collect(Collectors.toList());
@@ -149,8 +143,6 @@ public class RecipeService {
             List<Ingredient> subIngredients = updateRequestDto.getSubIngredients().stream()
                     .map((i)->Ingredient.builder()
                             .name(i.getName())
-                            .unit(i.getUnit())
-                            .quantity(i.getQuantity())
                             .isSub(YesOrNo.Y)
                             .build())
                     .collect(Collectors.toList());
