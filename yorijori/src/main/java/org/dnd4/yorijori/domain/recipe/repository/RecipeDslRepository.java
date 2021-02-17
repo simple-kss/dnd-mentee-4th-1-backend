@@ -2,7 +2,6 @@ package org.dnd4.yorijori.domain.recipe.repository;
 
 import static org.dnd4.yorijori.domain.label.entity.QLabel.label;
 import static org.dnd4.yorijori.domain.recipe.entity.QRecipe.recipe;
-import static org.dnd4.yorijori.domain.recipe_ingredient.entity.QRecipeIngredient.recipeIngredient;
 import static org.dnd4.yorijori.domain.ingredient.entity.QIngredient.ingredient;
 import static org.dnd4.yorijori.domain.recipe_theme.entity.QRecipeTheme.recipeTheme;
 import static org.dnd4.yorijori.domain.theme.entity.QTheme.theme;
@@ -50,8 +49,7 @@ public class RecipeDslRepository extends QuerydslRepositorySupport {
 			String order, String keyword, int limit, int offset) {
 		return queryFactory
 				.selectFrom(recipe)
-				.leftJoin(recipeIngredient).on(recipe.eq(recipeIngredient.recipe))
-				.leftJoin(ingredient).on(ingredient.eq(recipeIngredient.ingredient))
+				.leftJoin(ingredient).on(recipe.eq(ingredient.recipe))
 				.leftJoin(recipeTheme).on(recipe.eq(recipeTheme.recipe))
 				.leftJoin(theme).on(theme.eq(recipeTheme.theme))
 				.where( 

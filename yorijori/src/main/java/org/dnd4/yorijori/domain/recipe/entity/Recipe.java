@@ -9,7 +9,6 @@ import org.dnd4.yorijori.domain.common.YesOrNo;
 import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
 import org.dnd4.yorijori.domain.label.entity.Label;
 import org.dnd4.yorijori.domain.rating.entity.Rating;
-import org.dnd4.yorijori.domain.recipe_ingredient.entity.RecipeIngredient;
 import org.dnd4.yorijori.domain.recipe_theme.entity.RecipeTheme;
 import org.dnd4.yorijori.domain.step.entity.Step;
 import org.dnd4.yorijori.domain.theme.entity.Theme;
@@ -44,12 +43,19 @@ public class Recipe extends BaseTimeEntity {
 	private int viewCount;
 	private String thumbnail;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="pid")
+	private Recipe parent;
+
+	@OneToMany(mappedBy = "parent")
+	private List<Recipe> child = new ArrayList<>();
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 
 	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
-	private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+	private List<Ingredient> ingredients = new ArrayList<>();
 
 	@OneToMany(mappedBy = "recipe" ,cascade = CascadeType.ALL)
 	private List<Step> steps = new ArrayList<>();
@@ -66,9 +72,9 @@ public class Recipe extends BaseTimeEntity {
 	@OneToMany(mappedBy = "recipe",cascade = CascadeType.ALL)
 	private List<Label> labels = new ArrayList<>();
 
-	public void addRecipeIngredient(RecipeIngredient recipeIngredient) {
-		this.recipeIngredients.add(recipeIngredient);
-		recipeIngredient.setRecipe(this);
+	public void addIngredient(Ingredient ingredient) {
+		this.ingredients.add(ingredient);
+		ingredient.setRecipe(this);
 	}
 	public void addStep(Step step){
 		this.steps.add(step);
@@ -82,8 +88,13 @@ public class Recipe extends BaseTimeEntity {
 		this.recipeThemes.add(recipeTheme);
 		recipeTheme.setRecipe(this);
 	}
-
-
+	public void setParent(Recipe recipe){
+		this.parent = recipe;
+	}
+	public void addChildRecipe(Recipe child){
+		this.child.add(child);
+		child.setParent(this);
+	}
 
 	@Builder
 	public Recipe(String title,
@@ -91,7 +102,7 @@ public class Recipe extends BaseTimeEntity {
 				  int time,
 				  String thumbnail,
 				  User user,
-				  List<RecipeIngredient> recipeIngredients,
+				  List<Ingredient> ingredients,
 				  List<Step> steps,
 				  List<RecipeTheme> recipeThemes)
 	{
@@ -101,8 +112,8 @@ public class Recipe extends BaseTimeEntity {
 		this.thumbnail = thumbnail;
 		this.user = user;
 
-		for(RecipeIngredient recipeIngredient : recipeIngredients){
-			addRecipeIngredient(recipeIngredient);
+		for(Ingredient ingredient : ingredients){
+			addIngredient(ingredient);
 		}
 		for(Step step_ : steps){
 			addStep(step_);
@@ -114,16 +125,14 @@ public class Recipe extends BaseTimeEntity {
 	}
 
 	public List<Ingredient> getMainIngredients(){
-		return this.getRecipeIngredients().stream()
+		return this.getIngredients().stream()
 				.filter(i->i.getIsSub().equals(YesOrNo.N))
-				.map(RecipeIngredient::getIngredient)
 				.collect(Collectors.toList());
 	}
 
 	public List<Ingredient> getSubIngredients(){
-		return this.getRecipeIngredients().stream()
+		return this.getIngredients().stream()
 				.filter(i->i.getIsSub().equals(YesOrNo.Y))
-				.map(RecipeIngredient::getIngredient)
 				.collect(Collectors.toList());
 	}
 
@@ -150,8 +159,9 @@ public class Recipe extends BaseTimeEntity {
 					   int time,
 					   int viewCount,
 					   String thumbnail,
-					   List<RecipeIngredient> recipeIngredients,
-					   List<RecipeTheme> recipeThemes
+					   List<Ingredient> ingredients,
+					   List<RecipeTheme> recipeThemes,
+					   Recipe parent
 	){
 		this.title = title;
 		this.step = step;
@@ -159,13 +169,15 @@ public class Recipe extends BaseTimeEntity {
 		this.viewCount = viewCount;
 		this.thumbnail = thumbnail;
 
-		for(RecipeIngredient recipeIngredient : recipeIngredients){
-			addRecipeIngredient(recipeIngredient);
+		this.ingredients = new ArrayList<>();
+		for(Ingredient ingredient : ingredients){
+			addIngredient(ingredient);
 		}
 
 		for(RecipeTheme recipeTheme : recipeThemes){
 			addRecipeTheme(recipeTheme);
 		}
+		this.parent=parent;
 
 	}
 
