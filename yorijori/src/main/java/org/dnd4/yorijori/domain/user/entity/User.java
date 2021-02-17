@@ -1,23 +1,31 @@
 package org.dnd4.yorijori.domain.user.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.dnd4.yorijori.domain.user_follow.entity.UserFollow;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.dnd4.yorijori.domain.user_follow.entity.UserFollow;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class User {
+public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +33,58 @@ public class User {
 
 	private String name;
 	private String email;
-
+	private String imageUrl;
+	
 	@OneToMany(mappedBy = "follower")
 	private List<UserFollow> follower = new ArrayList<>();
 
 	@OneToMany(mappedBy = "following")
 	private List<UserFollow> following = new ArrayList<>();
 
+	@ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+    
 	@Builder
-	public User(String name, String email){
+	public User(String name, String email, List<String> roles){
 		this.name = name;
 		this.email = email;
+		this.roles = roles;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public String getPassword() {
+		return null;
 	}
 }
