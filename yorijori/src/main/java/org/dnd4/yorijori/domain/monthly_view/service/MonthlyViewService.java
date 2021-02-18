@@ -3,9 +3,11 @@ package org.dnd4.yorijori.domain.monthly_view.service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.service.RecipeService;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -25,13 +27,14 @@ public class MonthlyViewService {
 		zSetOperations.incrementScore("view", recipe_id, 1);
     }
 	
-	public List<Recipe> rank(int top) {
+	public List<ResponseDto> rank(int top) {
 		List<Recipe> result = new ArrayList<>();
 		Set<Long> recipes = zSetOperations.reverseRange("view", 0, top - 1);
 		for (Long rid : recipes) {
 			result.add(recipeService.get(rid));
 		}
-		return result;
+		return result.stream()
+				.map(ResponseDto::new).collect(Collectors.toList());
 	}
 	
 }
