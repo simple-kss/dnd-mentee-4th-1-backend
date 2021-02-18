@@ -11,6 +11,7 @@ import org.dnd4.yorijori.domain.ingredient.repository.IngredientRepository;
 import org.dnd4.yorijori.domain.monthly_view.service.MonthlyViewService;
 import org.dnd4.yorijori.domain.recipe.dto.IngredientDto;
 import org.dnd4.yorijori.domain.recipe.dto.RequestDto;
+import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
@@ -95,7 +96,7 @@ public class RecipeViewRankTest {
 
 	@Test
 	public void rank() throws Exception {
-		List<Recipe> rank = monthlyViewService.rank(3);
+		List<ResponseDto> rank = monthlyViewService.rank(3);
 		assertEquals(rank.get(0).getId(), Long.valueOf(1));
 		assertEquals(rank.get(1).getId(), Long.valueOf(2));
 		assertEquals(rank.get(2).getId(), Long.valueOf(3));
