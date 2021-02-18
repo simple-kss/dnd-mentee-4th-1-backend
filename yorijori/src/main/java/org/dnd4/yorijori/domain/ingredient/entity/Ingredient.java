@@ -1,12 +1,12 @@
 package org.dnd4.yorijori.domain.ingredient.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.dnd4.yorijori.domain.common.YesOrNo;
+import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
@@ -16,5 +16,21 @@ public class Ingredient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "recipe_id", nullable = false)
+    private Recipe recipe;
+
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private YesOrNo isSub;
+    @Builder
+    public Ingredient(String name,YesOrNo isSub){
+        this.name = name;
+        this.isSub = isSub;
+    }
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
 }

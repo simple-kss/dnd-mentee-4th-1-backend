@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import lombok.Builder;
 import org.dnd4.yorijori.domain.common.BaseTimeEntity;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.user.entity.User;
@@ -32,4 +33,14 @@ public class Rating extends BaseTimeEntity {
 	private Recipe recipe;
 
 	private double star;
+
+	@Builder
+	public Rating(Recipe recipe,User user,double star){
+		this.recipe = recipe;
+		this.user = user;
+		this.star = star;
+	}
+	public void  setRecipe(Recipe recipe){
+		this.recipe =recipe;
+	}
 }
