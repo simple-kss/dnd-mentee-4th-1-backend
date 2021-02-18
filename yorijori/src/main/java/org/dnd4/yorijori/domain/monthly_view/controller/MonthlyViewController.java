@@ -6,8 +6,8 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.dnd4.yorijori.domain.monthly_view.service.MonthlyViewService;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
-import org.dnd4.yorijori.domain.recipe.service.RecipeService;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,22 +22,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/view")
 public class MonthlyViewController {
 
-	@Resource(name = "redisTemplate")
-	private ZSetOperations<String, Long> zSetOperations;
-	private final RecipeService recipeService;
+	private final MonthlyViewService monthlyViewService;
 	
 	@PostMapping
-	public void increase(@RequestParam(value = "recipe") Long recipe_id) {
-		zSetOperations.incrementScore("view", recipe_id, 1);
+	public void visit(@RequestParam(value = "recipe") Long recipe_id) {
+		monthlyViewService.visit(recipe_id);
 	}
 
 	@GetMapping("/rank")
-	public List<Recipe> viewTop(@RequestParam(value = "top") int top) {
-		List<Recipe> result = new ArrayList<>();
-		Set<Long> recipes = zSetOperations.reverseRange("view", 0, top - 1);
-		for (Long rid : recipes) {
-			result.add(recipeService.get(rid));
-		}
-		return result;
+	public List<Recipe> rank(@RequestParam(value = "top") int top) {
+		return monthlyViewService.rank(top);
 	}
 }
