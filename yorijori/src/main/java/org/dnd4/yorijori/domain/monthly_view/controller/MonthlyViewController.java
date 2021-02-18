@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/redis")
+@RequestMapping("/view")
 public class MonthlyViewController {
 
 	@Autowired
 	private MonthlyViewRepository monthlyViewRepository;
 	
 	@GetMapping
-	public void test(@RequestParam(value = "recipe") Long recipe_id) {
+	public void increase(@RequestParam(value = "recipe") Long recipe_id) {
 		Optional<MonthlyView> optional = monthlyViewRepository.findByrecipeId(recipe_id);
 		if(optional.isPresent()) {
 			MonthlyView entity = optional.get();
