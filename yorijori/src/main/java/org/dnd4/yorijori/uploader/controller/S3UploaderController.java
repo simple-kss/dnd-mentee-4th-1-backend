@@ -16,9 +16,21 @@ import java.io.IOException;
 public class S3UploaderController {
     private S3UploaderService s3UploaderService;
 
-    @PostMapping("/upload")
-    public Result upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+    @PostMapping("/upload/step")
+    public Result uploadStep(@RequestParam("data") MultipartFile multipartFile) throws IOException {
         String imageUrl = s3UploaderService.upload(multipartFile, "step");
+        return new Result(imageUrl);
+    }
+
+    @PostMapping("/upload/profile")
+    public Result uploadProfile(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        String imageUrl = s3UploaderService.upload(multipartFile, "profile");
+        return new Result(imageUrl);
+    }
+
+    @PostMapping("/upload/thumbnail")
+    public Result upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        String imageUrl = s3UploaderService.upload(multipartFile, "thumbnail");
         return new Result(imageUrl);
     }
 
