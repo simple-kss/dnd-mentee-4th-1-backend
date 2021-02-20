@@ -59,7 +59,7 @@ public class RecipeViewRankTest {
 	@Before
 	public void 초기화() {
 		List<IngredientDto> mainIngredientDtos = new ArrayList<>();
-		IngredientDto ingredientDto = new IngredientDto("재료", "개", 1);
+		IngredientDto ingredientDto = new IngredientDto("재료");
 		mainIngredientDtos.add(ingredientDto);
 
 		List<Long> themeIds = new ArrayList<>();
