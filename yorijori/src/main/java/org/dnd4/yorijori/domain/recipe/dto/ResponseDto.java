@@ -26,6 +26,7 @@ public class ResponseDto {
     private int wishCount;
     private int viewCount;
     private UserDto writer;
+    private ParentRecipeDto parentRecipe;
 
     public ResponseDto(Recipe recipe){
         id = recipe.getId();
@@ -54,6 +55,7 @@ public class ResponseDto {
 
         User user = recipe.getUser();
         writer = new UserDto(user.getId(),user.getName(), user.getEmail());
+        parentRecipe = new ParentRecipeDto(recipe);
     }
 
 
