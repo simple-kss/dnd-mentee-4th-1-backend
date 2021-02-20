@@ -5,7 +5,8 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - image: circleci/openjdk:8-jdk # specifically, a docker image with ruby 2.4.1
         auth:
 
-    working_directory: ~/yorijori
+    - attach_workspace:
+        at: ~/yorijori
 
     # Steps are a list of commands to run inside the docker container above.
     steps:
