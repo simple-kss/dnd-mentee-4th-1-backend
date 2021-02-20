@@ -49,13 +49,13 @@ public class UserFollowController {
 	}
 
 	@GetMapping("/user/{userId}/followerFeed")
-	public List<ResponseDto> followerFeed(@PathVariable Long userId, @RequestParam int limit, @RequestParam int offset) {
+	public List<ResponseDto> followerFeed(@PathVariable Long userId, @RequestParam(required = false, defaultValue = "10") int limit, @RequestParam(required = false, defaultValue = "0") int offset) {
 		List<ResponseDto> result = userFollowService.followerFeed(userId, limit, offset);
 		return result;
 	}
 	
 	@GetMapping("/user/{userId}/followingFeed")
-	public List<ResponseDto> followingFeed(@PathVariable Long userId, @RequestParam int limit, @RequestParam int offset) {
+	public List<ResponseDto> followingFeed(@PathVariable Long userId, @RequestParam(required = false, defaultValue = "10") int limit, @RequestParam(required = false, defaultValue = "0") int offset) {
 		List<ResponseDto> result = userFollowService.followingFeed(userId, limit, offset);
 		return result;
 	}
