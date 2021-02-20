@@ -1,7 +1,6 @@
 package org.dnd4.yorijori.domain.user_follow.entity;
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,15 +10,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 
+import org.dnd4.yorijori.domain.common.YesOrNo;
+import org.dnd4.yorijori.domain.user.entity.User;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.dnd4.yorijori.domain.common.YesOrNo;
-import org.dnd4.yorijori.domain.ingredient.entity.Ingredient;
-import org.dnd4.yorijori.domain.recipe.entity.Recipe;
-import org.dnd4.yorijori.domain.recipe_theme.entity.RecipeTheme;
-import org.dnd4.yorijori.domain.step.entity.Step;
-import org.dnd4.yorijori.domain.user.entity.User;
 
 @Getter
 @NoArgsConstructor
@@ -46,8 +42,21 @@ public class UserFollow {
 	public UserFollow(User following, User follower) {
 		this.following = following;
 		this.follower = follower;
+		this.followingAlarm = YesOrNo.Y;
 		this.followerAlarm = YesOrNo.Y;
+	}
+	
+	public void followingAlarmOn() {
+		this.followingAlarm = YesOrNo.Y;
+	}
+	public void followingAlarmOff() {
+		this.followingAlarm = YesOrNo.N;
+	}
+	public void followerAlarmOn() {
 		this.followerAlarm = YesOrNo.Y;
+	}
+	public void followerAlarmOff() {
+		this.followerAlarm = YesOrNo.N;
 	}
 }
 

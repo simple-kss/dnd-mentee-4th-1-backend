@@ -46,7 +46,27 @@ public class UserFollowController {
 	public void unfollow(@PathVariable Long followingId, @PathVariable Long followerId) {
 		userFollowService.unfollow(followingId, followerId);
 	}
-
+	
+	@PostMapping("/user/{followingId}/following/{followerId}/alarm")
+	public void followingAlarmOn(@PathVariable Long followingId, @PathVariable Long followerId) {
+		userFollowService.followingAlarmOn(followingId, followerId);
+	}
+	
+	@DeleteMapping("/user/{followingId}/following/{followerId}/alarm")
+	public void followingAlarmOff(@PathVariable Long followingId, @PathVariable Long followerId) {
+		userFollowService.followingAlarmOff(followingId, followerId);
+	}
+	
+	@PostMapping("/user/{followingId}/follower/{followerId}/alarm")
+	public void followerAlarmOn(@PathVariable Long followingId, @PathVariable Long followerId) {
+		userFollowService.followerAlarmOn(followingId, followerId);
+	}
+	
+	@DeleteMapping("/user/{followingId}/follower/{followerId}/alarm")
+	public void followerAlarmOff(@PathVariable Long followingId, @PathVariable Long followerId) {
+		userFollowService.followerAlarmOff(followingId, followerId);
+	}
+	
 	@GetMapping("/user/{userId}/followerFeeds")
 	public List<ResponseDto> followerFeed(@PathVariable Long userId,
 			@RequestParam(required = false, defaultValue = "10") int limit,

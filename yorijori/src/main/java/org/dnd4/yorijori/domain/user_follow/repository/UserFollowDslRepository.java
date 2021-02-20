@@ -4,6 +4,7 @@ import static org.dnd4.yorijori.domain.recipe.entity.QRecipe.recipe;
 
 import java.util.List;
 
+import org.dnd4.yorijori.domain.common.YesOrNo;
 import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import static org.dnd4.yorijori.domain.user_follow.entity.QUserFollow.userFollow;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -27,7 +28,8 @@ public class UserFollowDslRepository extends QuerydslRepositorySupport {
 						JPAExpressions
 						.select(userFollow.following)
 						.from(userFollow)
-						.where(userFollow.follower.id.eq(userId))))
+						.where(userFollow.follower.id.eq(userId),
+								userFollow.followingAlarm.eq(YesOrNo.Y))))
 				.orderBy(recipe.createdDate.desc())
 				.limit(limit)
 				.offset(offset)
@@ -42,7 +44,8 @@ public class UserFollowDslRepository extends QuerydslRepositorySupport {
 						JPAExpressions
 						.select(userFollow.follower)
 						.from(userFollow)
-						.where(userFollow.following.id.eq(userId))))
+						.where(userFollow.following.id.eq(userId),
+								userFollow.followerAlarm.eq(YesOrNo.Y))))
 				.orderBy(recipe.createdDate.desc())
 				.limit(limit)
 				.offset(offset)
