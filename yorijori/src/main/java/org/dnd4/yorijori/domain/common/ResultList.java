@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper=false)
-public class ResultList<T> extends BaseResult{
+public class ResultList<T> extends BaseResult<T>{
     private List<T> list;
 
     public ResultList(List<T> data){

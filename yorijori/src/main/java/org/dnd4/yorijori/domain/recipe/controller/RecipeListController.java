@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.dnd4.yorijori.domain.monthly_view.service.MonthlyViewService;
 import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class RecipeListController {
 
 	private final RecipeListService recipeListService;
-
+	private final MonthlyViewService monthlyViewService;
+	
 	@GetMapping("/recipes")
 	public List<ResponseDto> recipeList(@RequestParam(required = false) String queryType,
 			@RequestParam(required = false) String step, @RequestParam(required = false) String time,
@@ -37,7 +39,7 @@ public class RecipeListController {
 			return recipeListService.findAll(step, time, start, end, order, keyword, limit, offset);
 		}
 		if (queryType.equals("viewTop")) {
-			return recipeListService.findAll(step, time, start, end, "view", keyword, limit, offset);
+			return monthlyViewService.rank(limit);
 		}
 		if (queryType.equals("labelTop")) {
 			return recipeListService.labelTop(start, end, limit, offset);
