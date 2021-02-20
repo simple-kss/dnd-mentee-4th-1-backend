@@ -26,7 +26,6 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-
 }
 
 repositories {
@@ -53,6 +52,8 @@ dependencies {
     testCompile("org.assertj:assertj-core:3.11.1")
     compile("com.querydsl:querydsl-jpa")
     compile("com.querydsl:querydsl-apt")
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    compile('org.springframework.boot:spring-boot-starter-data-redis')
 }
 
 apply plugin:"com.ewerk.gradle.plugins.querydsl" // Plugin 적용
@@ -67,10 +68,3 @@ querydsl {
 sourceSets {
     main.java.srcDir querydslDir
 }
-configurations {
-	querydsl.extendsFrom compileClasspath
-}
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-
