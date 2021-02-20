@@ -10,13 +10,13 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - checkout # this pulls code down from GitHuba
       - run: echo "A first hello" # This prints "A first hello" to stdout.
       - run: gradle dependencies
-          # run tests and package
-          #      - run: 
-          #        - name: gradlew clean
-          #        - command: ./gradlew clean test
-          #      - run: 
-          #        - name: gradlew assembel
-          #        - ommand: ./gradlew assemble
+        # run tests and package
+      - run: 
+        name: gradlew clean
+        command: ./gradlew clean test
+      - run: 
+        name: gradlew assembel
+        command: ./gradlew assemble
 
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
