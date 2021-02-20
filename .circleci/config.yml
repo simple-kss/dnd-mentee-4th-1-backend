@@ -9,7 +9,6 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
     steps:
       - checkout # this pulls code down from GitHuba
       - run: echo "A first hello" # This prints "A first hello" to stdout.
-
       - run: gradle dependencies
           # run tests and package
       - run: 
