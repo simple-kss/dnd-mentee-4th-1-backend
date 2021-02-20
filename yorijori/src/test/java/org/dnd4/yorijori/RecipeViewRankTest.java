@@ -12,7 +12,6 @@ import org.dnd4.yorijori.domain.monthly_view.service.MonthlyViewService;
 import org.dnd4.yorijori.domain.recipe.dto.IngredientDto;
 import org.dnd4.yorijori.domain.recipe.dto.RequestDto;
 import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
-import org.dnd4.yorijori.domain.recipe.entity.Recipe;
 import org.dnd4.yorijori.domain.recipe.repository.RecipeRepository;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
 import org.dnd4.yorijori.domain.recipe.service.RecipeService;
@@ -59,8 +58,8 @@ public class RecipeViewRankTest {
 	@Before
 	public void 초기화() {
 		List<IngredientDto> mainIngredientDtos = new ArrayList<>();
-		IngredientDto ingredientDto = new IngredientDto("재료", "개", 1);
-		mainIngredientDtos.add(ingredientDto);
+        IngredientDto ingredientDto = new IngredientDto("재료");
+        mainIngredientDtos.add(ingredientDto);
 
 		List<Long> themeIds = new ArrayList<>();
 		Theme theme = Theme.builder().name("분위기").build();
