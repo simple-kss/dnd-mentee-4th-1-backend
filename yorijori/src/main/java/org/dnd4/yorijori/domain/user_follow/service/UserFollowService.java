@@ -51,30 +51,30 @@ public class UserFollowService {
     }
 
 	@Transactional
-	public void followingAlarmOn(Long followingId, Long followerId) {
-		User follower = userRepository.findById(followerId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followerId));
+	public void followingAlarmOn(Long userId, Long followingId) {
+		User follower = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + userId));
 		User following = userRepository.findById(followingId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followingId));
 		UserFollow entity = userFollowRepository.findByFollowerAndFollowing(follower, following).orElseThrow(()->new IllegalArgumentException("데이터가 없습니다."));
 		entity.followingAlarmOn();
 	}
 	@Transactional
-	public void followingAlarmOff(Long followingId, Long followerId) {
-		User follower = userRepository.findById(followerId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followerId));
+	public void followingAlarmOff(Long userId, Long followingId) {
+		User follower = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + userId));
 		User following = userRepository.findById(followingId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followingId));
 		UserFollow entity = userFollowRepository.findByFollowerAndFollowing(follower, following).orElseThrow(()->new IllegalArgumentException("데이터가 없습니다."));
 		entity.followingAlarmOff();
 	}
 	@Transactional
-	public void followerAlarmOn(Long followingId, Long followerId) {
+	public void followerAlarmOn(Long userId, Long followerId) {
 		User follower = userRepository.findById(followerId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followerId));
-		User following = userRepository.findById(followingId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followingId));
+		User following = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + userId));
 		UserFollow entity = userFollowRepository.findByFollowerAndFollowing(follower, following).orElseThrow(()->new IllegalArgumentException("데이터가 없습니다."));
 		entity.followerAlarmOn();
 	}
 	@Transactional
-	public void followerAlarmOff(Long followingId, Long followerId) {
+	public void followerAlarmOff(Long userId, Long followerId) {
 		User follower = userRepository.findById(followerId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followerId));
-		User following = userRepository.findById(followingId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + followingId));
+		User following = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 아이디의 유저가 없습니다. id : " + userId));
 		UserFollow entity = userFollowRepository.findByFollowerAndFollowing(follower, following).orElseThrow(()->new IllegalArgumentException("데이터가 없습니다."));
 		entity.followerAlarmOff();
 	}

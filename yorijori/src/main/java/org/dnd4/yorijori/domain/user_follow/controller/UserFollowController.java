@@ -47,24 +47,24 @@ public class UserFollowController {
 		userFollowService.unfollow(followingId, followerId);
 	}
 	
-	@PostMapping("/user/{followingId}/following/{followerId}/alarm")
-	public void followingAlarmOn(@PathVariable Long followingId, @PathVariable Long followerId) {
-		userFollowService.followingAlarmOn(followingId, followerId);
+	@PostMapping("/user/{userId}/following/{followingId}/alarm")
+	public void followingAlarmOn(@PathVariable Long userId, @PathVariable Long followingId) {
+		userFollowService.followingAlarmOn(userId, followingId);
 	}
 	
-	@DeleteMapping("/user/{followingId}/following/{followerId}/alarm")
-	public void followingAlarmOff(@PathVariable Long followingId, @PathVariable Long followerId) {
-		userFollowService.followingAlarmOff(followingId, followerId);
+	@DeleteMapping("/user/{userId}/following/{followingId}/alarm")
+	public void followingAlarmOff(@PathVariable Long userId, @PathVariable Long followingId) {
+		userFollowService.followingAlarmOff(userId, followingId);
 	}
 	
-	@PostMapping("/user/{followingId}/follower/{followerId}/alarm")
-	public void followerAlarmOn(@PathVariable Long followingId, @PathVariable Long followerId) {
-		userFollowService.followerAlarmOn(followingId, followerId);
+	@PostMapping("/user/{userId}/follower/{followerId}/alarm")
+	public void followerAlarmOn(@PathVariable Long userId, @PathVariable Long followerId) {
+		userFollowService.followerAlarmOn(userId, followerId);
 	}
 	
-	@DeleteMapping("/user/{followingId}/follower/{followerId}/alarm")
-	public void followerAlarmOff(@PathVariable Long followingId, @PathVariable Long followerId) {
-		userFollowService.followerAlarmOff(followingId, followerId);
+	@DeleteMapping("/user/{userId}/follower/{followerId}/alarm")
+	public void followerAlarmOff(@PathVariable Long userId, @PathVariable Long followerId) {
+		userFollowService.followerAlarmOff(userId, followerId);
 	}
 	
 	@GetMapping("/user/{userId}/followerFeeds")
