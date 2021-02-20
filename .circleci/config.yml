@@ -11,12 +11,12 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
       - run: echo "A first hello" # This prints "A first hello" to stdout.
       - run: gradle dependencies
           # run tests and package
-      - run: 
-        - name: gradlew clean
-        - command: ./gradlew clean test
-      - run: 
-        - name: gradlew assembel
-        - ommand: ./gradlew assemble
+          #      - run: 
+          #        - name: gradlew clean
+          #        - command: ./gradlew clean test
+          #      - run: 
+          #        - name: gradlew assembel
+          #        - ommand: ./gradlew assemble
 
 # Under the workflows: map, we can coordinate our two jobs, defined above.
 workflows:
