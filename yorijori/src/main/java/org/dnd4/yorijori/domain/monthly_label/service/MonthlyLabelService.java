@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class MonthlyLableService {
+public class MonthlyLabelService {
 	
 	@Resource(name = "redisTemplate")
 	private ZSetOperations<String, Long> zSetOperations;

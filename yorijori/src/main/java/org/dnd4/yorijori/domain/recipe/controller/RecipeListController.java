@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import org.dnd4.yorijori.domain.monthly_label.service.MonthlyLabelService;
 import org.dnd4.yorijori.domain.monthly_view.service.MonthlyViewService;
 import org.dnd4.yorijori.domain.recipe.dto.ResponseDto;
 import org.dnd4.yorijori.domain.recipe.service.RecipeListService;
@@ -19,6 +20,7 @@ public class RecipeListController {
 
 	private final RecipeListService recipeListService;
 	private final MonthlyViewService monthlyViewService;
+	private final MonthlyLabelService monthlyLabelService;
 	
 	@GetMapping("/recipes")
 	public List<ResponseDto> recipeList(@RequestParam(required = false) String queryType,
@@ -42,9 +44,9 @@ public class RecipeListController {
 			return monthlyViewService.rank(limit);
 		}
 		if (queryType.equals("labelTop")) {
-			return recipeListService.labelTop(start, end, limit, offset);
+			return monthlyViewService.rank(limit);
 		}
-		return recipeListService.findAll(step, time, start, end, order, keyword, limit, offset);
+		return null;
 	}
 
 }
