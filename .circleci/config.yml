@@ -7,10 +7,10 @@ jobs: # we now have TWO jobs, so that a workflow can coordinate them!
 
     # Steps are a list of commands to run inside the docker container above.
     steps:
-      - checkout # this pulls code down from GitHuba
       - attach_workspace:
-        at: ~/yorijori
+          at: ~/yorijori
 
+      - checkout # this pulls code down from GitHuba
       - run: echo "A first hello" # This prints "A first hello" to stdout.
 
       - run: gradle dependencies
